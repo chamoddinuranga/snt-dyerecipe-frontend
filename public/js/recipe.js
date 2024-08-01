@@ -60,88 +60,7 @@ function updateRow() {
   cells[5].textContent = amtsInGramsValue;
 }
 
-// function addRow() {
-//   // Get values from input fields
-//   const functionValue = document.getElementById("function").value;
-//   const productValue = document.getElementById("product").value;
-//   const doseValue = document.getElementById("dose").value;
-//   const tempValue = document.getElementById("temp").value;
-//   const timeValue = document.getElementById("time").value;
-//   const amtsInGramsValue = document.getElementById("amtsInGrams").value;
 
-//   // Create a new row
-//   const tableBody = document.getElementById("processTableBody");
-//   const newRow = document.createElement("tr");
-//   newRow.innerHTML = `
-//       <td>${functionValue}</td>
-//       <td>${productValue}</td>
-//       <td>${doseValue}</td>
-//       <td>${tempValue}</td>
-//       <td>${timeValue}</td>
-//       <td>${amtsInGramsValue}</td>
-//     `;
-
-//   // Add the new row to the table
-//   tableBody.appendChild(newRow);
-
-//   // Clear input fields
-//   clearFields();
-// }
-// function addRow() {
-//   // Get values from input fields
-//   const functionValue = document.getElementById("function").value;
-//   const productValue = document.getElementById("product").value;
-//   const doseValue = parseFloat(document.getElementById("dose").value); // Ensure it's a number
-//   const tempValue = document.getElementById("temp").value;
-//   const timeValue = document.getElementById("time").value;
-
-//   // Determine product type and calculate amtsInGrams
-//   let amtsInGramsValue;
-
-//   // Fetch product type (Assuming you have a function to get this; otherwise, you'll need to adapt this part)
-//   $.ajax({
-//     method: "GET",
-//     url: "http://localhost:8080/api/v1/product/getProductType?productName=" + encodeURIComponent(productValue),
-//     success: function(response) {
-//       if (response.code === "00") {
-//         const productType = response.content.productType; // Assuming response contains productType
-//         console.log
-
-//         // Calculate amtsInGrams based on product type
-//         if (productType === "DYE") {
-//           amtsInGramsValue = doseValue * 10;
-//         } else if (productType === "CHEMICAL") {
-//           amtsInGramsValue = doseValue * 28;
-//         } else {
-//           amtsInGramsValue = 0; // Default value if type is unknown
-//         }
-
-//         // Create a new row
-//         const tableBody = document.getElementById("processTableBody");
-//         const newRow = document.createElement("tr");
-//         newRow.innerHTML = `
-//           <td>${functionValue}</td>
-//           <td>${productValue}</td>
-//           <td>${doseValue}</td>
-//           <td>${tempValue}</td>
-//           <td>${timeValue}</td>
-//           <td>${amtsInGramsValue}</td>
-//         `;
-
-//         // Add the new row to the table
-//         tableBody.appendChild(newRow);
-
-//         // Clear input fields
-//         clearFields();
-//       } else {
-//         alert("Error fetching product type");
-//       }
-//     },
-//     error: function(xhr, exception) {
-//       console.error("Error fetching product type: " + xhr.status + " - " + xhr.statusText);
-//     }
-//   });
-// }
 
 function addRow() {
   // Get values from input fields
@@ -323,7 +242,7 @@ function addSpaceRow() {
 }
 
 
-
+// Save the recipe 
 
 function saveRecipe() {
   // Retrieve values from the form
@@ -392,44 +311,8 @@ function saveRecipe() {
   });
 }
 
-// $(document).ready(function () {
-//   // Event handler for input changes
-//   $("#labDip").on("input", function () {
-//     let query = $(this).val();
-//     if (query.length >= 2) { // Trigger search when at least 2 characters are entered
-//       loadLabDipSuggestions(query);
-//     }
-//   });
 
-//   // Event handler for Enter key press
-//   $("#labDip").on("keydown", function (event) {
-//     if (event.key === "Enter") {
-//       event.preventDefault(); // Prevent form submission or default action
-//       let query = $(this).val();
-//       if (query.length >= 2) { // Trigger search when at least 2 characters are entered
-//         loadLabDipSuggestions(query);
-//       }
-//     }
-//   });
 
-//   function loadLabDipSuggestions(query) {
-//     $.ajax({
-//       method: "GET",
-//       contentType: "application/json",
-//       url: "http://localhost:8080/api/v1/recipe/searchLabDips?query=" + encodeURIComponent(query),
-//       success: function (response) {
-//         let datalist = $("#labDipSuggestions");
-//         datalist.empty(); // Clear previous suggestions
-//         for (let recipe of response) {
-//           datalist.append(`<option value="${recipe.labDip}">`);
-//         }
-//       },
-//       error: function (xhr, exception) {
-//         console.error("Error occurred: " + xhr.status + " - " + xhr.statusText);
-//       },
-//     });
-//   }
-// });
 
 $(document).ready(function () {
   // Load lab dip suggestions when the user types in the lab dip field
@@ -527,7 +410,7 @@ function printRecipe() {
   }, 1000);
 }
 
-// $(document).ready(function () {
+
 //   // Bind the search function to the input field for lab dip
 //   $("#searchLabDip").on("input", function () {
 //       let labDip = $(this).val();
