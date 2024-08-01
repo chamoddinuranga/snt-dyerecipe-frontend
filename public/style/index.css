@@ -1,0 +1,94 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #a0a0a0;
+
+  }
+  .container {
+    background: #b3ddff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .btn-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+  .btn-dashboard .btn {
+    font-size: 16px;
+    font-weight: bold;
+    width: 80%; /* Adjust as needed */
+  }
+  .btn-dashboard .btn:last-child {
+    width: 40%; /* Adjust width for the logout button */
+    background-color: red;
+    color: white;
+  }
+  .input-group-append {
+    cursor: pointer;
+  }
+  #add_user_section .container,
+  #add_product_section .container {
+    box-shadow: none;
+    padding: 0;
+  }
+
+  #new_recipe_section {
+    position: fixed; /* Make it cover the full screen */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fae2fc; /* Background color */
+    z-index: 1000; /* Ensure it’s on top of other elements */
+    overflow: auto; /* Allow scrolling if content overflows */
+    padding: 20px; /* Add some padding */
+  }
+
+  /* Add this CSS to style the table container */
+  .table-container {
+    max-height: 400px; /* Adjust the height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+
+  /* Optional: Add some margin to ensure spacing around the table container */
+  .table-section {
+    margin-top: 20px;
+  }
+
+  /* Styling for the button group */
+  .btn-group {
+    border: 1px solid #6c757d; /* Dark ash border color */
+    border-radius: 0.25rem; /* Optional: Add border radius for rounded corners */
+    margin-right: 10px;
+  }
+
+  /* Styling for buttons within the button group */
+  .btn-group .btn {
+    margin-right: 5px; /* Adds space between buttons */
+  }
+
+  /* Remove margin from the last button in the group */
+  .btn-group .btn:last-child {
+    margin-right: 0; /* Removes margin from the last button */
+  }
+
+  /* Styling for the separator between button groups */
+  .btn-group-separator {
+    margin-top: 20px; /* Adds a large gap between button groups */
+  }
+
+  /* Font Awesome icon styling */
+  .fas {
+    font-size: 16px; /* Adjust icon size as needed */
+  }
