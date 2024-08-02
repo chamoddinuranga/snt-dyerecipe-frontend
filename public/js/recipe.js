@@ -44,7 +44,7 @@ function updateRow() {
 
   // Get values from input fields
   const functionValue = document.getElementById("function").value;
-  const productValue = document.getElementById("product").value;A
+  const productValue = document.getElementById("product").value;
   const doseValue = document.getElementById("dose").value;
   const tempValue = document.getElementById("temp").value;
   const timeValue = document.getElementById("time").value;
@@ -227,8 +227,30 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
+// function addSpaceRow() {
+//   // Create a new row
+//   const tableBody = document.getElementById("processTableBody");
+//   const newRow = document.createElement("tr");
+
+//   // Add empty cells to the new row
+//   newRow.innerHTML = `
+//     <td colspan="6"></td>
+//   `;
+
+//   // Update the selected row with the new values
+//   const cells = selectedRow.getElementsByTagName("td");
+//   cells[0].textContent = "";
+//   cells[1].textContent = "";
+//   cells[2].textContent = "";
+//   cells[3].textContent = "";
+//   cells[4].textContent = "";
+//   cells[5].textContent = "";
+
+//   // Add the new row to the table
+//   tableBody.appendChild(newRow);
+// }
 function addSpaceRow() {
-  // Create a new row
+  // Get the table body and create a new row
   const tableBody = document.getElementById("processTableBody");
   const newRow = document.createElement("tr");
 
@@ -241,10 +263,137 @@ function addSpaceRow() {
   tableBody.appendChild(newRow);
 }
 
+function addRowAbove() {
+  // Get the table body and selected row
+  const tableBody = document.getElementById("processTableBody");
+  const selectedRow = document.querySelector(".selected");
+
+  if (selectedRow) {
+    // Create a new row and insert it above the selected row
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+      <td colspan="6"></td>
+    `;
+    tableBody.insertBefore(newRow, selectedRow);
+  }
+}
+
+function addRowBelow() {
+  // Get the table body and selected row
+  const tableBody = document.getElementById("processTableBody");
+  const selectedRow = document.querySelector(".selected");
+
+  if (selectedRow) {
+    // Create a new row and insert it below the selected row
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+      <td colspan="6"></td>
+    `;
+    tableBody.insertBefore(newRow, selectedRow.nextSibling);
+  }
+}
+
+function deleteSelectedRow() {
+  // Get the selected row and its parent (table body)
+  const selectedRow = document.querySelector(".selected");
+  
+  if (selectedRow) {
+    selectedRow.remove();
+  }
+}
+
 
 // Save the recipe 
 
-function saveRecipe() {
+// function saveRecipe() {
+//   // Retrieve values from the form
+//   let reciNo = $("#reciNo").val();
+//   let grn = $("#grn").val();
+//   let rpDate = $("#rp_date").val();
+//   let machineNo = $("#machineNo").val();
+//   let rpTime = $("#rp_time").val();
+//   let labDip = $("#labDip").val();
+//   let color = $("#color").val();
+//   let fabric = $("#fabric").val();
+//   let weight = $("#weight").val();
+//   let liquorRatio = $("#liquorRatio").val();
+//   let volume = $("#volume").val();
+//   let roleCount = $("#roleCount").val();
+
+//   // Collect the rows of the table
+//   let tableRows = [];
+//   $("#processTableBody tr").each(function () {
+//     let cells = $(this).find("td");
+//     tableRows.push({
+//       addFunction: cells.eq(0).text(),
+//       // productName: cells.eq(1).text(),
+//       productId: productId,  // Assuming this is the correct index for productId
+//       dose: cells.eq(2).text(),
+//       temp: cells.eq(3).text(),
+//       time: cells.eq(4).text(),
+//       quantityInGrams: cells.eq(5).text(),
+//     });
+//   });
+
+//   // Prepare data for the request
+//   let recipeData = {
+//     reciNo: "00",
+//     color: color,
+//     labDip: labDip,
+//     roleCount: roleCount,
+//     weight: weight,
+//     liquorRatio: liquorRatio,
+//     volume: volume,
+//     createdUser: "user123", // Assuming a static user or get from session
+//     createdDateTime: new Date().toISOString(),
+//     recipeDetails: tableRows,
+//   };
+
+//   // Log the data to the console to view the format
+//   console.log(
+//     "Data being sent to the server:",
+//     JSON.stringify(recipeData, null, 2)
+//   );
+
+//   // Perform AJAX request
+//   $.ajax({
+//     method: "POST",
+//     contentType: "application/json",
+//     url: "http://localhost:8080/api/v1/recipe/saveRecipe",
+//     data: JSON.stringify(recipeData),
+//     success: function (data) {
+//       alert("Recipe saved successfully");
+//       clearFields();
+//       $("#processTableBody").empty();
+//     },
+//     error: function (xhr, exception) {
+//       alert("Error saving recipe: " + xhr.responseText);
+//       console.error("Error details:", exception); // Log response text for debugging
+//     },
+//   });
+// }
+
+// Function to fetch product ID by name
+function getProductIdByName(productName) {
+  return $.ajax({
+    method: "GET",
+    url: `http://localhost:8080/api/v1/product/getProductByProductName/${encodeURIComponent(productName)}`,
+    dataType: "json"
+  }).then(function (response) {
+    if (response.code === "00" && response.content) {
+      return response.content.productId; // Adjust based on your DTO
+    } else {
+      console.error(`Product not found for name: ${productName}`);
+      return null;
+    }
+  }).catch(function (error) {
+    console.error("Error fetching product ID:", error);
+    return null;
+  });
+}
+
+// Function to save a recipe
+async function saveRecipe() {
   // Retrieve values from the form
   let reciNo = $("#reciNo").val();
   let grn = $("#grn").val();
@@ -261,21 +410,33 @@ function saveRecipe() {
 
   // Collect the rows of the table
   let tableRows = [];
+  let rowPromises = [];
+
   $("#processTableBody tr").each(function () {
     let cells = $(this).find("td");
-    tableRows.push({
-      addFunction: cells.eq(0).text(),
-      productName: cells.eq(1).text(), // Assuming this is the correct index for productId
-      dose: cells.eq(2).text(),
-      temp: cells.eq(3).text(),
-      time: cells.eq(4).text(),
-      quantityInGrams: cells.eq(5).text(),
-    });
+    let productName = cells.eq(1).text(); // Assuming productName is in the second column
+
+    // Fetch product ID
+    rowPromises.push(getProductIdByName(productName).then(function (productId) {
+      if (productId) {
+        tableRows.push({
+          addFunction: cells.eq(0).text(),
+          productId: productId, // Use the productId
+          dose: cells.eq(2).text(),
+          temp: cells.eq(3).text(),
+          time: cells.eq(4).text(),
+          quantityInGrams: cells.eq(5).text(),
+        });
+      }
+    }));
   });
+
+  // Wait for all promises to resolve
+  await Promise.all(rowPromises);
 
   // Prepare data for the request
   let recipeData = {
-    reciNo: "00",
+    reciNo: reciNo,
     color: color,
     labDip: labDip,
     roleCount: roleCount,
@@ -312,6 +473,9 @@ function saveRecipe() {
 }
 
 
+
+
+//Load all labdips to the textbox
 
 
 $(document).ready(function () {
@@ -411,114 +575,53 @@ function printRecipe() {
 }
 
 
-//   // Bind the search function to the input field for lab dip
-//   $("#searchLabDip").on("input", function () {
-//       let labDip = $(this).val();
-//       if (labDip.length >= 2) { // Trigger search when at least 2 characters are entered
-//           searchRecipeByLabDip(labDip);
-//       }
-//   });
-
-//   function searchRecipeByLabDip(labDip) {
-//       $.ajax({
-//           method: "GET",
-//           contentType: "application/json",
-//           url: `http://localhost:8080/api/v1/recipe/getRecipeByLabDip/${encodeURIComponent(labDip)}`,
-//           success: function (response) {
-//               if (response.code === "00") {
-//                   displayRecipe(response.content);
-//               } else {
-//                   alert("No recipe found for this Lab Dip");
-//                   clearRecipeDetails();
-//               }
-//           },
-//           error: function (xhr, exception) {
-//               console.error("Error occurred: " + xhr.status + " - " + xhr.statusText);
-//           }
-//       });
-//   }
-
-//   function displayRecipe(recipe) {
-//       // Assuming you have a form or display area to show recipe details
-//       $("#reciNo").val(recipe.reciNo);
-//       $("#color").val(recipe.color);
-//       $("#labDip").val(recipe.labDip);
-//       $("#roleCount").val(recipe.roleCount);
-//       $("#weight").val(recipe.weight);
-//       $("#liquorRatio").val(recipe.liquorRatio);
-//       $("#volume").val(recipe.volume);
-//       // Populate the table with recipe details
-//       let tableBody = $("#processTableBody");
-//       tableBody.empty(); // Clear existing rows
-//       recipe.recipeDetails.forEach(detail => {
-//           tableBody.append(`
-//               <tr>
-//                   <td>${detail.addFunction}</td>
-//                   <td>${detail.productName}</td>
-//                   <td>${detail.dose}</td>
-//                   <td>${detail.temp}</td>
-//                   <td>${detail.time}</td>
-//                   <td>${detail.quantityInGrams}</td>
-//               </tr>
-//           `);
-//       });
-//   }
-
-//   function clearRecipeDetails() {
-//       $("#reciNo").val('');
-//       $("#color").val('');
-//       $("#labDip").val('');
-//       $("#roleCount").val('');
-//       $("#weight").val('');
-//       $("#liquorRatio").val('');
-//       $("#volume").val('');
-//       $("#processTableBody").empty();
-//   }
-// });
 
 // $(document).ready(function () {
 //   // Bind the click event of the search button
 //   $("#searchButton").on("click", function () {
-//       let labDip = $("#labDip").val();
-//       if (labDip.length >= 2) { // Trigger search when at least 2 characters are entered
-//           searchRecipeByLabDip(labDip);
-//       } else {
-//           alert("Please enter at least 2 characters for lab dip.");
-//       }
+//     let labDip = $("#labDip").val();
+//     if (labDip.length >= 2) {
+//       // Trigger search when at least 2 characters are entered
+//       searchRecipeByLabDip(labDip);
+//     } else {
+//       alert("Please enter at least 2 characters for lab dip.");
+//     }
 //   });
 
 //   function searchRecipeByLabDip(labDip) {
-//       $.ajax({
-//           method: "GET",
-//           contentType: "application/json",
-//           url: `http://localhost:8080/api/v1/recipe/getRecipeByLabDip/${encodeURIComponent(labDip)}`,
-//           success: function (response) {
-//               if (response.code === "00") {
-//                   displayRecipe(response.content);
-//               } else {
-//                   alert("No recipe found for this Lab Dip");
-//                   clearRecipeDetails();
-//               }
-//           },
-//           error: function (xhr, exception) {
-//               console.error("Error occurred: " + xhr.status + " - " + xhr.statusText);
-//           }
-//       });
+//     $.ajax({
+//       method: "GET",
+//       contentType: "application/json",
+//       url: `http://localhost:8080/api/v1/recipe/getRecipeByLabDip/${encodeURIComponent(
+//         labDip
+//       )}`,
+//       success: function (response) {
+//         if (response.code === "00") {
+//           displayRecipe(response.content);
+//         } else {
+//           alert("No recipe found for this Lab Dip");
+//           clearRecipeDetails();
+//         }
+//       },
+//       error: function (xhr, exception) {
+//         console.error("Error occurred: " + xhr.status + " - " + xhr.statusText);
+//       },
+//     });
 //   }
 
 //   function displayRecipe(recipe) {
-//       $("#reciNo").val(recipe.reciNo);
-//       $("#color").val(recipe.color);
-//       $("#labDip").val(recipe.labDip);
-//       $("#roleCount").val(recipe.roleCount);
-//       $("#weight").val(recipe.weight);
-//       $("#liquorRatio").val(recipe.liquorRatio);
-//       $("#volume").val(recipe.volume);
+//     $("#reciNo").val(recipe.reciNo);
+//     $("#color").val(recipe.color);
+//     $("#labDip").val(recipe.labDip);
+//     $("#roleCount").val(recipe.roleCount);
+//     $("#weight").val(recipe.weight);
+//     $("#liquorRatio").val(recipe.liquorRatio);
+//     $("#volume").val(recipe.volume);
 
-//       let tableBody = $("#processTableBody");
-//       tableBody.empty(); // Clear existing rows
-//       recipe.recipeDetails.forEach(detail => {
-//           tableBody.append(`
+//     let tableBody = $("#processTableBody");
+//     tableBody.empty(); // Clear existing rows
+//     recipe.recipeDetails.forEach((detail) => {
+//       tableBody.append(`
 //               <tr>
 //                   <td>${detail.addFunction}</td>
 //                   <td>${detail.productName}</td>
@@ -528,22 +631,24 @@ function printRecipe() {
 //                   <td>${detail.quantityInGrams}</td>
 //               </tr>
 //           `);
-//       });
+//     });
 //   }
 
 //   function clearRecipeDetails() {
-//       $("#reciNo").val('');
-//       $("#color").val('');
-//       $("#labDip").val('');
-//       $("#roleCount").val('');
-//       $("#weight").val('');
-//       $("#liquorRatio").val('');
-//       $("#volume").val('');
-//       $("#processTableBody").empty();
+//     $("#reciNo").val("");
+//     $("#color").val("");
+//     $("#labDip").val("");
+//     $("#roleCount").val("");
+//     $("#weight").val("");
+//     $("#liquorRatio").val("");
+//     $("#volume").val("");
+//     $("#processTableBody").empty();
 //   }
 // });
 
+
 $(document).ready(function () {
+
   // Bind the click event of the search button
   $("#searchButton").on("click", function () {
     let labDip = $("#labDip").val();
@@ -559,9 +664,7 @@ $(document).ready(function () {
     $.ajax({
       method: "GET",
       contentType: "application/json",
-      url: `http://localhost:8080/api/v1/recipe/getRecipeByLabDip/${encodeURIComponent(
-        labDip
-      )}`,
+      url: `http://localhost:8080/api/v1/recipe/getRecipeByLabDip/${encodeURIComponent(labDip)}`,
       success: function (response) {
         if (response.code === "00") {
           displayRecipe(response.content);
@@ -576,7 +679,30 @@ $(document).ready(function () {
     });
   }
 
-  function displayRecipe(recipe) {
+  async function getProductNameById(productId) {
+    if (!productId) {
+      console.error("Product ID is undefined or empty.");
+      return null;
+    }
+
+    return $.ajax({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/product/getProductByProductId/${productId}`,
+      dataType: "json"
+    }).then(function (response) {
+      if (response.code === "00" && response.content) {
+        return response.content.productName; // Adjust based on your DTO
+      } else {
+        console.error(`Product not found for ID: ${productId}`);
+        return null;
+      }
+    }).catch(function (error) {
+      console.error("Error fetching product name:", error);
+      return null;
+    });
+  }
+
+  async function displayRecipe(recipe) {
     $("#reciNo").val(recipe.reciNo);
     $("#color").val(recipe.color);
     $("#labDip").val(recipe.labDip);
@@ -587,18 +713,26 @@ $(document).ready(function () {
 
     let tableBody = $("#processTableBody");
     tableBody.empty(); // Clear existing rows
-    recipe.recipeDetails.forEach((detail) => {
+
+    let rowPromises = recipe.recipeDetails.map(async (detail) => {
+      // Fetch product name by productId
+      let productName = await getProductNameById(detail.productId);
+      
+      // Append row to the table
       tableBody.append(`
-              <tr>
-                  <td>${detail.addFunction}</td>
-                  <td>${detail.productName}</td>
-                  <td>${detail.dose}</td>
-                  <td>${detail.temp}</td>
-                  <td>${detail.time}</td>
-                  <td>${detail.quantityInGrams}</td>
-              </tr>
-          `);
+        <tr>
+          <td>${detail.addFunction}</td>
+          <td>${productName || 'Unknown'}</td> <!-- Display product name or 'Unknown' if not found -->
+          <td>${detail.dose}</td>
+          <td>${detail.temp}</td>
+          <td>${detail.time}</td>
+          <td>${detail.quantityInGrams}</td>
+        </tr>
+      `);
     });
+
+    // Wait for all rows to be appended
+    await Promise.all(rowPromises);
   }
 
   function clearRecipeDetails() {
