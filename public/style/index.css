@@ -14,6 +14,19 @@ body {
     width: 100%;
     max-width: 500px;
   }
+
+  /* Style for the Product column */
+  .table tbody tr td:nth-child(2),
+  .table thead th:nth-child(2) {
+    font-weight: bold;
+  }
+
+  /* Style for the Amts in Grams column */
+  .table tbody tr td:nth-child(6),
+  .table thead th:nth-child(6) {
+    font-weight: bold;
+  }
+
   .header {
     text-align: center;
     margin-bottom: 20px;
@@ -91,4 +104,9 @@ body {
   /* Font Awesome icon styling */
   .fas {
     font-size: 16px; /* Adjust icon size as needed */
+  }
+
+   /* Transform text to uppercase for the input field */
+   #labDip {
+    text-transform: uppercase;
   }

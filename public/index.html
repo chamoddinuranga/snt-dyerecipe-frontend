@@ -78,14 +78,14 @@
         height: 100%;
         background-color: #fae2fc; /* Background color */
         z-index: 1000; /* Ensure it’s on top of other elements */
-        overflow: auto; /* Allow scrolling if content overflows */
+        /*overflow: auto;  Allow scrolling if content overflows */
         padding: 20px; /* Add some padding */
       }
 
       /* Add this CSS to style the table container */
       .table-container {
         max-height: 400px; /* Adjust the height as needed */
-        overflow-y: auto; /* Enable vertical scrolling */
+        /* overflow-y: auto; /* Enable vertical scrolling */
       }
 
       /* Optional: Add some margin to ensure spacing around the table container */
@@ -552,7 +552,7 @@
       <section id="new_recipe_section" style="display: none">
         <!-- Form Section -->
         <div class="form-section">
-          <h2>Dyeing Recipe & Process Management</h2>
+          <h2> SNT Dyeing Recipe & Process Management</h2>
           <form>
             <div class="row">
               <!-- First Row -->
@@ -632,9 +632,34 @@
                 <div class="mb-3">
                   <label for="fabric" class="form-label">Fabric</label>
                   <select id="fabric" class="form-select">
-                    <option value="">Select Fabric</option>
-                    <option value="Fabric 1">Fabric 1</option>
-                    <option value="Fabric 2">Fabric 2</option>
+                    <option value="Airtex">Airtex</option>
+                    <option value="Cotton S/J">Cotton S/J</option>
+                    <option value="Cotton I/L">Cotton I/L</option>
+                    <option value="LV 2">LV 2</option>
+                    <option value="PC B. Lacost">PC B. Lacost</option>
+                    <option value="PC I/L">PC I/L</option>
+                    <option value="PC P/k">PC P/k</option>
+                    <option value="PC Rib">PC Rib</option>
+                    <option value="PC S/J">PC S/J</option>
+                    <option value="PC S/J 20s">PC S/J 20s</option>
+                    <option value="PC S/J 24s">PC S/J 24s</option>
+                    <option value="PC S/J 30s">PC S/J 30s</option>
+                    <option value="PC S/J Millage">PC S/J Millage</option>
+                    <option value="P.Coat-Cool">P.Coat-Cool</option>
+                    <option value="PCS/J">PCS/J</option>
+                    <option value="PCS/J 24s">PCS/J 24s</option>
+                    <option value="PCS/J 30s">PCS/J 30s</option>
+                    <option value="Poly W/L">Poly W/L</option>
+                    <option value="Rib">Rib</option>
+                    <option value="Rn 2">Rn 2</option>
+                    <option value="Spun Rib">Spun Rib</option>
+                    <option value="Spun S/J">Spun S/J</option>
+                    <option value="Spun S/J 24s">Spun S/J 24s</option>
+                    <option value="Spun S/J 30s">Spun S/J 30s</option>
+                    <option value="T/C">T/C</option>
+                    <option value="Viscouse">Viscouse</option>
+                    <option value="W/L">W/L</option>
+
                     <!-- Add more options as needed -->
                   </select>
                 </div>
@@ -912,7 +937,7 @@
           </form>
           <!-- Table Section -->
           <div class="table-section">
-            <div class="table-container">
+            <div class="table-container-recipe">
               <table
                 class="table table-bordered border-primary table-hover"
                 id="processTable"
@@ -924,7 +949,7 @@
                     <th scope="col">Dose (g/L or %)</th>
                     <th scope="col">Temp (°C)</th>
                     <th scope="col">Time (Mins)</th>
-                    <th scope="col">Amts in Grams</th>
+                    <th class="amtsInGrams" scope="col">Amts in Grams</th>
                   </tr>
                 </thead>
                 <tbody id="processTableBody">
@@ -949,6 +974,5 @@
     <script src="js/product.js"></script>
     <script src="js/recipe.js"></script>
     <script src="js/auth.js"></script>
-
   </body>
 </html>

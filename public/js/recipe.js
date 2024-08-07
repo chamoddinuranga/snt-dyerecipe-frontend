@@ -60,8 +60,6 @@ function updateRow() {
   cells[5].textContent = amtsInGramsValue;
 }
 
-
-
 function addRow() {
   // Get values from input fields
   const functionValue = document.getElementById("function").value;
@@ -133,7 +131,11 @@ function addRow() {
   });
 }
 
-// Assuming clearFields function clears input fields
+
+
+
+
+//Assuming clearFields function clears input fields
 function clearFields() {
   document.getElementById("function").value = "";
   document.getElementById("product").value = "";
@@ -296,14 +298,13 @@ function addRowBelow() {
 function deleteSelectedRow() {
   // Get the selected row and its parent (table body)
   const selectedRow = document.querySelector(".selected");
-  
+
   if (selectedRow) {
     selectedRow.remove();
   }
 }
 
-
-//Save the recipe 
+//Save the recipe
 
 function saveRecipe() {
   // Retrieve values from the form
@@ -312,7 +313,7 @@ function saveRecipe() {
   let rpDate = $("#rp_date").val();
   let machineNo = $("#machineNo").val();
   let rpTime = $("#rp_time").val();
-  let labDip = $("#labDip").val();
+  let labDip = $("#labDip").val().toUpperCase();
   let color = $("#color").val();
   let fabric = $("#fabric").val();
   let weight = $("#weight").val();
@@ -326,7 +327,7 @@ function saveRecipe() {
     let cells = $(this).find("td");
     tableRows.push({
       addFunction: cells.eq(0).text(),
-       productName: cells.eq(1).text(),
+      productName: cells.eq(1).text(),
       //productId: productId,  // Assuming this is the correct index for productId
       dose: cells.eq(2).text(),
       temp: cells.eq(3).text(),
@@ -372,8 +373,6 @@ function saveRecipe() {
     },
   });
 }
-
-
 
 // // These are not valid Methods
 
@@ -491,8 +490,6 @@ function saveRecipe() {
 //   });
 // }
 
-
-
 // const productIdCache = {}; // Cache for storing product IDs
 
 // function getProductIdByName(productName) {
@@ -603,9 +600,6 @@ function saveRecipe() {
 //   });
 // }
 
-
-
-
 //Load all labdips to the textbox
 $(document).ready(function () {
   // Load lab dip suggestions when the user types in the lab dip field
@@ -652,17 +646,17 @@ $(document).ready(function () {
 //       /* Hide all buttons and fields */
 //       .btn,
 //       .btn-group,
-      
-//       #function, 
-//       #product, 
-//       #dose, 
-//       #temp, 
-//       #time, 
+
+//       #function,
+//       #product,
+//       #dose,
+//       #temp,
+//       #time,
 //       #amtsInGrams,
 //       #new_recipe_section > .form-section > .row > .col-md-3:not(:last-child) {
 //         display: none; /* Hide specified fields and some labels */
 //       }
-      
+
 //       /* Ensure the table is fully visible and well formatted */
 //       #processTable,
 //       #processTableBody {
@@ -670,7 +664,7 @@ $(document).ready(function () {
 //         width: 100%;
 //       }
 
-//       #processTable th, 
+//       #processTable th,
 //       #processTable td {
 //         border: 1px solid #000;
 //         padding: 5px;
@@ -704,7 +698,6 @@ $(document).ready(function () {
 //     }
 //   }, 1000);
 // }
-
 
 //Print the recipe 1
 // function printRecipe() {
@@ -716,17 +709,17 @@ $(document).ready(function () {
 //       /* Hide all buttons and fields */
 //       .btn,
 //       .btn-group,
-//       #function, 
-//       #product, 
-//       #dose, 
-//       #temp, 
-//       #time, 
+//       #function,
+//       #product,
+//       #dose,
+//       #temp,
+//       #time,
 //       #amtsInGrams,
 //       #new_recipe_section > .form-section > .row > .col-md-3:not(:last-child),
 //       .form-label-inset { /* Hide form-label-inset class */
 //         display: none; /* Hide specified fields and some labels */
 //       }
-      
+
 //       // /* Ensure the table is fully visible and well formatted */
 //       // #processTable,
 //       // #processTableBody {
@@ -734,7 +727,7 @@ $(document).ready(function () {
 //       //   width: 100%;
 //       // }
 
-//       #processTable th, 
+//       #processTable th,
 //       #processTable td {
 //         border: 1px solid #000;
 //         padding: 5px;
@@ -754,29 +747,14 @@ $(document).ready(function () {
 //     }
 //   `;
 
-//   // Append the style element to the head of the document
-//   document.head.appendChild(printStyle);
-
-//   // Trigger the print dialog
-//   window.print();
-
-//   // Remove the style element after printing
-//   setTimeout(() => {
-//     const style = document.getElementById("printStyle");
-//     if (style) {
-//       style.remove();
-//     }
-//   }, 1000);
-// }
-
-//Print the recipe 2
+// method 2
 function printRecipe() {
   // Create a style element for print-specific styles
   const printStyle = document.createElement("style");
   printStyle.id = "printStyle";
   printStyle.innerHTML = `
     @media print {
-      /* Hide all buttons and fields */
+      /* Hide non-printable elements */
       .btn,
       .btn-group,
       #function, 
@@ -786,15 +764,14 @@ function printRecipe() {
       #time, 
       #amtsInGrams,
       #new_recipe_section > .form-section > .row > .col-md-3:not(:last-child),
-      .form-label-inset { /* Hide form-label-inset class */
-        display: none; /* Hide specified fields and some labels */
+      .form-label-inset { /* Hide specified fields and some labels */
+        display: none; 
       }
-
+      
       /* Ensure the table is fully visible and well formatted */
-      #processTable,
-      #processTableBody {
+      #processTable {
         width: 100%;
-        border-collapse: collapse; /* Ensure borders are properly collapsed */
+        border-collapse: collapse;
       }
 
       #processTable th, 
@@ -802,10 +779,9 @@ function printRecipe() {
         border: 1px solid #000;
         padding: 5px;
         text-align: left;
-        word-wrap: break-word; /* Handle long text in cells */
       }
 
-      /* Ensure the table fits on the page */
+      /* Ensure the table takes up most of the page */
       @page {
         size: auto;
         margin: 0.5in;
@@ -816,15 +792,19 @@ function printRecipe() {
         padding: 0;
       }
 
-      /* Ensure the table fits on one page if possible */
+      /* Handle page breaks */
       #processTable {
-        page-break-inside: auto; /* Avoid breaking the table inside */
+        page-break-inside: auto;
       }
 
       #processTable tr {
-        page-break-inside: avoid; /* Avoid breaking rows */
+        page-break-inside: avoid;
         page-break-after: auto;
       }
+      
+      /* Make sure headers repeat on each page */
+      thead { display: table-header-group; }
+      tfoot { display: table-footer-group; }
     }
   `;
 
@@ -842,6 +822,92 @@ function printRecipe() {
     }
   }, 1000);
 }
+
+// remove over flow style while  printing
+// function printRecipe() {
+//   // Store the original overflow style
+//   const tableContainer = document.querySelector('.table-container');
+//   const originalOverflow = tableContainer.style.overflowY;
+
+//   // Remove the overflow style
+//   tableContainer.style.overflowY = 'visible'; 
+
+//   // Create a style element for print-specific styles
+//   const printStyle = document.createElement("style");
+//   printStyle.id = "printStyle";
+//   printStyle.innerHTML = `
+//     @media print {
+//       /* Hide non-printable elements */
+//       .btn,
+//       .btn-group,
+//       #function, 
+//       #product, 
+//       #dose, 
+//       #temp, 
+//       #time, 
+//       #amtsInGrams,
+//       #new_recipe_section > .form-section > .row > .col-md-3:not(:last-child),
+//       .form-label-inset { /* Hide specified fields and some labels */
+//         display: none; 
+//       }
+      
+//       /* Ensure the table is fully visible and well formatted */
+//       #processTable {
+//         width: 100%;
+//         border-collapse: collapse;
+//       }
+
+//       #processTable th, 
+//       #processTable td {
+//         border: 1px solid #000;
+//         padding: 5px;
+//         text-align: left;
+//       }
+
+//       /* Ensure the table takes up most of the page */
+//       @page {
+//         size: auto;
+//         margin: 0.5in;
+//       }
+
+//       body {
+//         margin: 0;
+//         padding: 0;
+//       }
+
+//       /* Handle page breaks */
+//       #processTable {
+//         page-break-inside: auto;
+//       }
+
+//       #processTable tr {
+//         page-break-inside: avoid;
+//         page-break-after: auto;
+//       }
+      
+//       /* Make sure headers repeat on each page */
+//       thead { display: table-header-group; }
+//       tfoot { display: table-footer-group; }
+//     }
+//   `;
+
+//   // Append the style element to the head of the document
+//   document.head.appendChild(printStyle);
+
+//   // Trigger the print dialog
+//   window.print();
+
+//   // Restore the original overflow style and remove the print-specific style
+//   setTimeout(() => {
+//     tableContainer.style.overflowY = originalOverflow;
+//     const style = document.getElementById("printStyle");
+//     if (style) {
+//       style.remove();
+//     }
+//   }, 1000);
+// }
+
+
 
 
 
@@ -917,7 +983,6 @@ $(document).ready(function () {
   }
 });
 
-
 // $(document).ready(function () {
 
 //   // Bind the click event of the search button
@@ -988,7 +1053,7 @@ $(document).ready(function () {
 //     let rowPromises = recipe.recipeDetails.map(async (detail) => {
 //       // Fetch product name by productId
 //       let productName = await getProductNameById(detail.productId);
-      
+
 //       // Append row to the table
 //       tableBody.append(`
 //         <tr>
@@ -1018,7 +1083,6 @@ $(document).ready(function () {
 //   }
 // });
 
-
 // function clearFields() {
 //   // Clear input fields except date and time
 //   const inputs = document.querySelectorAll('#new_recipe_section input');
@@ -1042,3 +1106,58 @@ $(document).ready(function () {
 // }
 
 
+// Function to update the amounts in grams for all rows
+function updateAmtsInGrams() {
+  // Get values from input fields
+  const weight = parseFloat(document.getElementById("weight").value) || 0;
+  const volume = parseFloat(document.getElementById("volume").value) || 0;
+
+  // Get all table rows
+  const tableRows = document.querySelectorAll("#processTableBody tr");
+
+  // Loop through each row and update the amtsInGrams column
+  tableRows.forEach(row => {
+    const productCell = row.cells[1]; // Product column
+    const doseCell = row.cells[2]; // Dose column
+    const amtsInGramsCell = row.cells[5]; // Amt in grams column
+
+    const productValue = productCell.textContent;
+    const doseValue = parseFloat(doseCell.textContent) || 0;
+
+    // Fetch product type
+    $.ajax({
+      method: "GET",
+      url: "http://localhost:8080/api/v1/product/getProductType?productName=" + encodeURIComponent(productValue),
+      success: function (response) {
+        if (response.code === "00" && response.content && response.content.productType) {
+          const productType = response.content.productType;
+
+          let amtsInGramsValue;
+
+          // Calculate amtsInGrams based on product type
+          if (productType === "Dye") {
+            amtsInGramsValue = doseValue * weight * 10;
+          } else if (productType === "Chemical") {
+            amtsInGramsValue = doseValue * volume;
+          } else {
+            amtsInGramsValue = 0; // Default value if type is unknown
+          }
+
+          // Update the amtsInGrams cell
+          amtsInGramsCell.textContent = amtsInGramsValue.toFixed(2); // Rounded to 2 decimal places
+        } else {
+          console.error("Error fetching product type:", response);
+          alert("Error fetching product type or product type is undefined");
+        }
+      },
+      error: function (xhr, exception) {
+        console.error("Error fetching product type: " + xhr.status + " - " + xhr.statusText);
+        alert("Error fetching product type");
+      }
+    });
+  });
+}
+
+// Attach event listeners to input fields
+document.getElementById("weight").addEventListener("input", updateAmtsInGrams);
+document.getElementById("volume").addEventListener("input", updateAmtsInGrams);
