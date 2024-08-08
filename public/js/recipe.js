@@ -95,6 +95,8 @@ function updateRow() {
         } else {
           amtsInGramsValue = 0; // Default value if type is unknown
         }
+        // Format amtsInGramsValue to 2 decimal places
+        amtsInGramsValue = amtsInGramsValue.toFixed(2);
 
         // Update the selected row with the new values
         const cells = selectedRow.getElementsByTagName("td");
@@ -159,6 +161,9 @@ function addRow() {
         } else {
           amtsInGramsValue = 0; // Default value if type is unknown
         }
+
+        // format the value to 2 decimal places
+        amtsInGramsValue = amtsInGramsValue.toFixed(2);
 
         // Create a new row
         const tableBody = document.getElementById("processTableBody");
@@ -1203,3 +1208,24 @@ function updateAmtsInGrams() {
 // Attach event listeners to input fields
 document.getElementById("weight").addEventListener("input", updateAmtsInGrams);
 document.getElementById("volume").addEventListener("input", updateAmtsInGrams);
+
+
+
+
+
+  function clearFields2() {
+    // Clear all input fields except date and time
+    document.querySelectorAll('.form-control').forEach(input => {
+      if (input.type !== 'date' && input.type !== 'time') {
+        input.value = '';
+      }
+    });
+
+    // Clear the table body
+    document.getElementById('processTableBody').innerHTML = '';
+
+    // Optional: Clear the datalist options if needed
+    document.getElementById('labDipSuggestions').innerHTML = '';
+    document.getElementById('productSuggestions').innerHTML = '';
+  }
+
