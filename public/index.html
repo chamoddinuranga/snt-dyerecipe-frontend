@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Single Page Login and Dashboard</title>
+    
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -23,109 +24,15 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+   
 
     <link rel="stylesheet" href="style/index.css" />
-    <style>
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #a0a0a0;
-      }
-      .container {
-        background: #b3ddff;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 500px;
-      }
-      .header {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-      .btn-dashboard {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        align-items: center;
-      }
-      .btn-dashboard .btn {
-        font-size: 16px;
-        font-weight: bold;
-        width: 80%; /* Adjust as needed */
-      }
-      .btn-dashboard .btn:last-child {
-        width: 40%; /* Adjust width for the logout button */
-        background-color: red;
-        color: white;
-      }
-      .input-group-append {
-        cursor: pointer;
-      }
-      #add_user_section .container,
-      #add_product_section .container {
-        box-shadow: none;
-        padding: 0;
-      }
-
-      #new_recipe_section {
-        position: fixed; /* Make it cover the full screen */
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #fae2fc; /* Background color */
-        z-index: 1000; /* Ensure it’s on top of other elements */
-        /*overflow: auto;  Allow scrolling if content overflows */
-        padding: 20px; /* Add some padding */
-      }
-
-      /* Add this CSS to style the table container */
-      .table-container {
-        max-height: 400px; /* Adjust the height as needed */
-        /* overflow-y: auto; /* Enable vertical scrolling */
-      }
-
-      /* Optional: Add some margin to ensure spacing around the table container */
-      .table-section {
-        margin-top: 20px;
-        /* overflow-y: auto; */
-      }
-
-      /* Styling for the button group */
-      .btn-group {
-        border: 1px solid #6c757d; /* Dark ash border color */
-        border-radius: 0.25rem; /* Optional: Add border radius for rounded corners */
-        margin-right: 10px;
-      }
-
-      /* Styling for buttons within the button group */
-      .btn-group .btn {
-        margin-right: 5px; /* Adds space between buttons */
-      }
-
-      /* Remove margin from the last button in the group */
-      .btn-group .btn:last-child {
-        margin-right: 0; /* Removes margin from the last button */
-      }
-
-      /* Styling for the separator between button groups */
-      .btn-group-separator {
-        margin-top: 20px; /* Adds a large gap between button groups */
-      }
-
-      /* Font Awesome icon styling */
-      .fas {
-        font-size: 16px; /* Adjust icon size as needed */
-      }
-    </style>
+ 
   </head>
   <body>
     <!-- Login Section -->
-    <div class="container">
-      <section id="loginSection">
+    
+      <section id="loginSection" class="container">
         <div class="header">
           <h2>SNT Login</h2>
         </div>
@@ -160,7 +67,7 @@
       </section>
 
       <!-- Admin Dashboard Section -->
-      <section id="admin_dashboard" style="display: none">
+      <section class="container" id="admin_dashboard" style="display: none">
         <div class="header">
           <h2>Admin Dashboard</h2>
         </div>
@@ -183,7 +90,7 @@
       </section>
 
       <!-- User Dashboard Section -->
-      <section id="user_dashboard" style="display: none">
+      <section class="container" id="user_dashboard" style="display: none">
         <div class="header">
           <h2>User Dashboard</h2>
         </div>
@@ -202,7 +109,7 @@
       </section>
 
       <!-- Add User Section -->
-      <section id="add_user_section" style="display: none">
+      <section class="container" id="add_user_section" style="display: none">
         <div class="header">
           <h2>Add New User</h2>
         </div>
@@ -301,7 +208,7 @@
       </section>
 
       <!-- Add Product Session  -->
-      <section id="add_product_section" style="display: none">
+      <section class="container" id="add_product_section" style="display: none">
         <div class="header">
           <h2>Add New Product</h2>
         </div>
@@ -386,7 +293,7 @@
         </div>
       </section>
       <!-- New Order Section -->
-      <section id="new_order_section" style="display: none">
+      <section class="container" id="new_order_section" style="display: none">
         <div class="header">
           <h2>New Order</h2>
         </div>
@@ -552,7 +459,8 @@
       <section id="new_recipe_section" style="display: none">
         <!-- Form Section -->
         <div class="form-section">
-          <h2> SNT Dyeing Recipe & Process Management</h2>
+          <h2 style="text-align: center;">SNT Dyeing Recipe & Process Management</h2>
+
           <form>
             <div class="row">
               <!-- First Row -->
@@ -739,10 +647,10 @@
                 </div> -->
                 <div class="mb-3">
                   <label for="function" class="form-label-inset"
-                    ><strong>Function</strong></label
+                    ><strong>Select Function</strong></label
                   >
                   <select id="function" class="form-select">
-                    <option value=""><strong>Select Function</strong></option>
+                    <option value=""><strong></strong></option>
                     <option value="Add Chemical">Add Chemical</option>
                     <option value="Add Dye">Add Dye</option>
                     <option value="Add Salt">Add Salt</option>
@@ -808,7 +716,7 @@
 
               <div class="col-md-2">
                 <div class="mb-3">
-                  <label for="time" class="form-label-inset"
+                  <label for="time" id="timeRecipe" class="form-label-inset"
                     ><strong>Time (Mins)</strong></label
                   >
                   <input
@@ -960,7 +868,7 @@
           </div>
         </div>
       </section>
-    </div>
+    
     <script src="js/jquery-3.6.4.min.js"></script>
     <!--    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -974,5 +882,6 @@
     <script src="js/product.js"></script>
     <script src="js/recipe.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/print.js"></script>
   </body>
 </html>

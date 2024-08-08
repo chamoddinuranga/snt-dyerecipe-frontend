@@ -33,6 +33,32 @@ $(document).ready(function () {
   }
 });
 
+// function updateRow() {
+//   // Get the selected row
+//   const selectedRow = document.querySelector("tr.selected");
+
+//   if (!selectedRow) {
+//     alert("Please select a row to update.");
+//     return;
+//   }
+
+//   // Get values from input fields
+//   const functionValue = document.getElementById("function").value;
+//   const productValue = document.getElementById("product").value;
+//   const doseValue = document.getElementById("dose").value;
+//   const tempValue = document.getElementById("temp").value;
+//   const timeValue = document.getElementById("time").value;
+//   const amtsInGramsValue = document.getElementById("amtsInGrams").value;
+
+//   // Update the selected row with the new values
+//   const cells = selectedRow.getElementsByTagName("td");
+//   cells[0].textContent = functionValue;
+//   cells[1].textContent = productValue;
+//   cells[2].textContent = doseValue;
+//   cells[3].textContent = tempValue;
+//   cells[4].textContent = timeValue;
+//   cells[5].textContent = amtsInGramsValue;
+// }
 function updateRow() {
   // Get the selected row
   const selectedRow = document.querySelector("tr.selected");
@@ -45,20 +71,54 @@ function updateRow() {
   // Get values from input fields
   const functionValue = document.getElementById("function").value;
   const productValue = document.getElementById("product").value;
-  const doseValue = document.getElementById("dose").value;
+  const doseValue = parseFloat(document.getElementById("dose").value); // Ensure it's a number
   const tempValue = document.getElementById("temp").value;
   const timeValue = document.getElementById("time").value;
-  const amtsInGramsValue = document.getElementById("amtsInGrams").value;
+  
+  // Fetch product type and calculate amtsInGrams
+  let amtsInGramsValue;
+  let weight = $("#weight").val();
+  let volume = $("#volume").val();
 
-  // Update the selected row with the new values
-  const cells = selectedRow.getElementsByTagName("td");
-  cells[0].textContent = functionValue;
-  cells[1].textContent = productValue;
-  cells[2].textContent = doseValue;
-  cells[3].textContent = tempValue;
-  cells[4].textContent = timeValue;
-  cells[5].textContent = amtsInGramsValue;
+  $.ajax({
+    method: "GET",
+    url: "http://localhost:8080/api/v1/product/getProductType?productName=" + encodeURIComponent(productValue),
+    success: function (response) {
+      if (response.code === "00" && response.content && response.content.productType) {
+        const productType = response.content.productType;
+
+        // Calculate amtsInGrams based on product type
+        if (productType === "Dye") {
+          amtsInGramsValue = doseValue * weight * 10;
+        } else if (productType === "Chemical") {
+          amtsInGramsValue = doseValue * volume;
+        } else {
+          amtsInGramsValue = 0; // Default value if type is unknown
+        }
+
+        // Update the selected row with the new values
+        const cells = selectedRow.getElementsByTagName("td");
+        cells[0].textContent = functionValue;
+        cells[1].textContent = productValue;
+        cells[2].textContent = doseValue;
+        cells[3].textContent = tempValue;
+        cells[4].textContent = timeValue;
+        cells[5].textContent = amtsInGramsValue;
+
+        // Set the updated value in the amtsInGrams input field
+        document.getElementById("amtsInGrams").value = amtsInGramsValue;
+      } else {
+        console.error("Error fetching product type:", response);
+        alert("Error fetching product type or product type is undefined");
+      }
+    },
+    error: function (xhr, exception) {
+      console.error("Error fetching product type: " + xhr.status + " - " + xhr.statusText);
+      alert("Error fetching product type");
+    }
+  });
 }
+
 
 function addRow() {
   // Get values from input fields
@@ -130,10 +190,6 @@ function addRow() {
     },
   });
 }
-
-
-
-
 
 //Assuming clearFields function clears input fields
 function clearFields() {
@@ -748,90 +804,7 @@ $(document).ready(function () {
 //   `;
 
 // method 2
-function printRecipe() {
-  // Create a style element for print-specific styles
-  const printStyle = document.createElement("style");
-  printStyle.id = "printStyle";
-  printStyle.innerHTML = `
-    @media print {
-      /* Hide non-printable elements */
-      .btn,
-      .btn-group,
-      #function, 
-      #product, 
-      #dose, 
-      #temp, 
-      #time, 
-      #amtsInGrams,
-      #new_recipe_section > .form-section > .row > .col-md-3:not(:last-child),
-      .form-label-inset { /* Hide specified fields and some labels */
-        display: none; 
-      }
-      
-      /* Ensure the table is fully visible and well formatted */
-      #processTable {
-        width: 100%;
-        border-collapse: collapse;
-      }
-
-      #processTable th, 
-      #processTable td {
-        border: 1px solid #000;
-        padding: 5px;
-        text-align: left;
-      }
-
-      /* Ensure the table takes up most of the page */
-      @page {
-        size: auto;
-        margin: 0.5in;
-      }
-
-      body {
-        margin: 0;
-        padding: 0;
-      }
-
-      /* Handle page breaks */
-      #processTable {
-        page-break-inside: auto;
-      }
-
-      #processTable tr {
-        page-break-inside: avoid;
-        page-break-after: auto;
-      }
-      
-      /* Make sure headers repeat on each page */
-      thead { display: table-header-group; }
-      tfoot { display: table-footer-group; }
-    }
-  `;
-
-  // Append the style element to the head of the document
-  document.head.appendChild(printStyle);
-
-  // Trigger the print dialog
-  window.print();
-
-  // Remove the style element after printing
-  setTimeout(() => {
-    const style = document.getElementById("printStyle");
-    if (style) {
-      style.remove();
-    }
-  }, 1000);
-}
-
-// remove over flow style while  printing
 // function printRecipe() {
-//   // Store the original overflow style
-//   const tableContainer = document.querySelector('.table-container');
-//   const originalOverflow = tableContainer.style.overflowY;
-
-//   // Remove the overflow style
-//   tableContainer.style.overflowY = 'visible'; 
-
 //   // Create a style element for print-specific styles
 //   const printStyle = document.createElement("style");
 //   printStyle.id = "printStyle";
@@ -840,24 +813,24 @@ function printRecipe() {
 //       /* Hide non-printable elements */
 //       .btn,
 //       .btn-group,
-//       #function, 
-//       #product, 
-//       #dose, 
-//       #temp, 
-//       #time, 
+//       #function,
+//       #product,
+//       #dose,
+//       #temp,
+//       #time,
 //       #amtsInGrams,
 //       #new_recipe_section > .form-section > .row > .col-md-3:not(:last-child),
 //       .form-label-inset { /* Hide specified fields and some labels */
-//         display: none; 
+//         display: none;
 //       }
-      
+
 //       /* Ensure the table is fully visible and well formatted */
 //       #processTable {
 //         width: 100%;
 //         border-collapse: collapse;
 //       }
 
-//       #processTable th, 
+//       #processTable th,
 //       #processTable td {
 //         border: 1px solid #000;
 //         padding: 5px;
@@ -884,7 +857,7 @@ function printRecipe() {
 //         page-break-inside: avoid;
 //         page-break-after: auto;
 //       }
-      
+
 //       /* Make sure headers repeat on each page */
 //       thead { display: table-header-group; }
 //       tfoot { display: table-footer-group; }
@@ -897,15 +870,77 @@ function printRecipe() {
 //   // Trigger the print dialog
 //   window.print();
 
-//   // Restore the original overflow style and remove the print-specific style
+//   // Remove the style element after printing
 //   setTimeout(() => {
-//     tableContainer.style.overflowY = originalOverflow;
 //     const style = document.getElementById("printStyle");
 //     if (style) {
 //       style.remove();
 //     }
 //   }, 1000);
 // }
+
+// function printRecipe() {
+//   // Create a style element for print-specific styles
+//   const printStyle = document.createElement("style");
+//   printStyle.id = "printStyle";
+//   printStyle.innerHTML = `
+//     @media print {
+//       body {
+//         background-color: white; /* Print-friendly background color */
+//         color: black; /* Ensure text is legible in print */
+//         width: auto; /* Ensure body width is auto for printing */
+//         height: auto; /* Ensure body height is auto for printing */
+//         margin: 0; /* Remove margins */
+//       }
+
+//       /* Hide elements not needed in print */
+//       .no-print {
+//         display: none;
+//       }
+
+//       /* Ensure the printable section is visible */
+//       #new_recipe_section {
+//         position: static; /* Remove fixed position for print */
+//         width: auto; /* Ensure width is auto for printing */
+//         height: auto; /* Ensure height is auto for printing */
+//         background-color: #fae2fc; /* Background color for print */
+//         overflow: visible; /* Ensure overflow is visible */
+//         padding: 20px; /* Add some padding */
+//         box-shadow: none; /* Remove box-shadow for print */
+//       }
+
+//       /* Adjust table styling for print */
+//       .table-container, .table-section {
+//         max-height: none; /* Remove max-height restriction for print */
+//         overflow: visible; /* Ensure overflow is visible */
+//       }
+
+//       /* Page breaks */
+//       @page {
+//         margin: 0.5in; /* Set margins for print pages */
+//       }
+
+//       .page-break {
+//         page-break-before: always; /* Force a new page */
+//       }
+//     }
+//   `;
+
+//   // Append the style element to the head of the document
+//   document.head.appendChild(printStyle);
+
+//   // Trigger the print dialog
+//   window.print();
+
+//   // Remove the style element after printing
+//   setTimeout(() => {
+//     const style = document.getElementById("printStyle");
+//     if (style) {
+//       style.remove();
+//     }
+//   }, 1000);
+// }
+
 
 
 
@@ -1105,7 +1140,6 @@ $(document).ready(function () {
 //   }
 // }
 
-
 // Function to update the amounts in grams for all rows
 function updateAmtsInGrams() {
   // Get values from input fields
@@ -1116,7 +1150,7 @@ function updateAmtsInGrams() {
   const tableRows = document.querySelectorAll("#processTableBody tr");
 
   // Loop through each row and update the amtsInGrams column
-  tableRows.forEach(row => {
+  tableRows.forEach((row) => {
     const productCell = row.cells[1]; // Product column
     const doseCell = row.cells[2]; // Dose column
     const amtsInGramsCell = row.cells[5]; // Amt in grams column
@@ -1127,9 +1161,15 @@ function updateAmtsInGrams() {
     // Fetch product type
     $.ajax({
       method: "GET",
-      url: "http://localhost:8080/api/v1/product/getProductType?productName=" + encodeURIComponent(productValue),
+      url:
+        "http://localhost:8080/api/v1/product/getProductType?productName=" +
+        encodeURIComponent(productValue),
       success: function (response) {
-        if (response.code === "00" && response.content && response.content.productType) {
+        if (
+          response.code === "00" &&
+          response.content &&
+          response.content.productType
+        ) {
           const productType = response.content.productType;
 
           let amtsInGramsValue;
@@ -1151,9 +1191,11 @@ function updateAmtsInGrams() {
         }
       },
       error: function (xhr, exception) {
-        console.error("Error fetching product type: " + xhr.status + " - " + xhr.statusText);
+        console.error(
+          "Error fetching product type: " + xhr.status + " - " + xhr.statusText
+        );
         alert("Error fetching product type");
-      }
+      },
     });
   });
 }

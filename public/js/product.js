@@ -84,7 +84,7 @@ $(document).ready(function () {
         if (isSaving) return; // Prevent multiple saves
 
         isSaving = true; // Set flag to indicate save operation is in progress
-
+        $('#productName').val('');
         $.ajax({
             method: "POST",
             contentType: "application/json",
