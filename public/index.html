@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Single Page Login and Dashboard</title>
-    
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -24,157 +24,407 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-   
 
     <link rel="stylesheet" href="style/index.css" />
- 
   </head>
   <body>
     <!-- Login Section -->
-    
-      <section id="loginSection" class="container">
-        <div class="header">
-          <h2>SNT Login</h2>
+
+    <section id="loginSection" class="container">
+      <div class="header">
+        <h2>SNT Login</h2>
+      </div>
+      <form onsubmit="return validatePassword()">
+        <div class="form-group mb-4">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            placeholder="Enter username"
+          />
         </div>
-        <form onsubmit="return validatePassword()">
-          <div class="form-group mb-4">
-            <label for="username">Username</label>
+        <div class="form-group mb-4">
+          <label for="password">Password</label>
+          <div class="input-group">
             <input
-              type="text"
+              type="password"
               class="form-control"
-              id="username"
-              placeholder="Enter username"
+              id="password"
+              placeholder="Enter password"
             />
+            <span class="input-group-text" onclick="togglePassword()">
+              <i class="fas fa-eye" id="togglePasswordIcon"></i>
+            </span>
           </div>
-          <div class="form-group mb-4">
-            <label for="password">Password</label>
-            <div class="input-group">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mb-4">
+          Login
+        </button>
+      </form>
+    </section>
+
+    <!-- Admin Dashboard Section -->
+    <section class="container" id="admin_dashboard" style="display: none">
+      <div class="header">
+        <h2>Admin Dashboard</h2>
+      </div>
+      <div class="btn-dashboard">
+        <button class="btn btn-primary" onclick="showAddProduct()">
+          Add New Product
+        </button>
+        <button class="btn btn-primary" onclick="showNewOrder()">
+          New Order
+        </button>
+        <button class="btn btn-primary" onclick="showAddRecipe()">
+          Recipe Page
+        </button>
+        <button class="btn btn-primary">Products Report</button>
+        <button class="btn btn-primary" onclick="showAddUser()">
+          Add New User
+        </button>
+        <button class="btn btn-danger" onclick="logout()">Logout</button>
+      </div>
+    </section>
+
+    <!-- User Dashboard Section -->
+    <section class="container" id="user_dashboard" style="display: none">
+      <div class="header">
+        <h2>User Dashboard</h2>
+      </div>
+      <div class="btn-dashboard">
+        <button class="btn btn-primary" onclick="showNewOrder()">
+          New Order
+        </button>
+        <button class="btn btn-primary" onclick="showAddRecipe()">
+          Recipe Page
+        </button>
+        <button class="btn btn-primary" onclick="showAddProduct()">
+          Add New Product
+        </button>
+        <button class="btn btn-danger" onclick="logout()">Logout</button>
+      </div>
+    </section>
+
+    <!-- Add User Section -->
+    <section class="container" id="add_user_section" style="display: none">
+      <div class="header">
+        <h2>Add New User</h2>
+      </div>
+      <div class="mb-3">
+        <label for="userId" class="form-label">User ID</label>
+        <input
+          type="text"
+          disabled
+          class="form-control"
+          id="userId"
+          placeholder="User ID"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="fullName" class="form-label">Full Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="fullName"
+          placeholder="Full Name"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="user_name" class="form-label">User Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="user_name"
+          placeholder="User Name"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="userPassword" class="form-label">Password</label>
+        <input
+          type="text"
+          class="form-control"
+          id="userPassword"
+          placeholder="Password"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="userRole" class="form-label">User Role</label>
+        <select id="userRole" class="form-select">
+          <option value="">Select User Role</option>
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
+      <div>
+        <button type="button" class="btn btn-primary" onclick="saveUser()">
+          Save
+        </button>
+
+        <button type="button" class="btn btn-secondary" onclick="updateUser()">
+          Update
+        </button>
+        <button type="button" class="btn btn-success" onclick="deleteUser()">
+          Delete
+        </button>
+        <button
+          type="button"
+          class="btn btn-warning"
+          onclick="backToDashboard()"
+        >
+          Back
+        </button>
+        <button type="button" class="btn btn-danger" onclick="logout()">
+          Logout
+        </button>
+      </div>
+
+      <div class="mt-3">
+        <div class="table-section">
+          <table class="table table-bordered border-primary table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">User ID</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">User Name</th>
+                <th scope="col">Password</th>
+                <th scope="col">User Role</th>
+              </tr>
+            </thead>
+            <tbody id="empTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add Product Session  -->
+    <section class="container" id="add_product_section" style="display: none">
+      <div class="header">
+        <h2>Add New Product</h2>
+      </div>
+      <div class="mb-3">
+        <label for="productId" class="form-label">Product ID</label>
+        <input
+          type="text"
+          disabled
+          class="form-control"
+          id="productId"
+          placeholder="Product ID"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="productName" class="form-label">Product Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="productName"
+          placeholder="Product Name"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="productType" class="form-label">Product Type</label>
+        <select id="productType" class="form-select">
+          <option value="">Select Product Type</option>
+          <option value="Dye">Dye</option>
+          <option value="Chemical">Chemical</option>
+        </select>
+      </div>
+
+      <div>
+        <button
+          type="button"
+          id="productSaveButton"
+          class="btn btn-primary"
+          onclick="saveProduct()"
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          onclick="updateProduct()"
+        >
+          Update
+        </button>
+        <button type="button" class="btn btn-success" onclick="deleteProduct()">
+          Delete
+        </button>
+        <button
+          type="button"
+          class="btn btn-warning"
+          onclick="backToDashboard()"
+        >
+          Back
+        </button>
+        <button type="button" class="btn btn-danger" onclick="logout()">
+          Logout
+        </button>
+      </div>
+
+      <div class="mt-3">
+        <div class="table-container">
+          <table class="table table-bordered border-primary table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">Product ID</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Product Type</th>
+              </tr>
+            </thead>
+            <tbody id="productTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <!-- New Order Section -->
+    <section class="container" id="new_order_section" style="display: none">
+      <div class="header">
+        <h2>New Order</h2>
+      </div>
+      <form>
+        <div class="row">
+          <!-- Left Side -->
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="reciNo" class="form-label">Reci No.</label>
               <input
-                type="password"
+                type="text"
+                disabled
                 class="form-control"
-                id="password"
-                placeholder="Enter password"
+                id="reciNoOrder"
+                placeholder="Reci No."
               />
-              <span class="input-group-text" onclick="togglePassword()">
-                <i class="fas fa-eye" id="togglePasswordIcon"></i>
-              </span>
+            </div>
+
+            <div class="mb-3">
+              <label for="date" class="form-label">Date</label>
+              <input type="date" class="form-control" id="date" />
+            </div>
+
+            <div class="mb-3">
+              <label for="time" class="form-label">Time</label>
+              <input type="time" class="form-control" id="timeOrder" />
+            </div>
+
+            <div class="mb-3">
+              <label for="grn" class="form-label">GRN</label>
+              <input
+                type="text"
+                class="form-control"
+                id="grnOrder"
+                placeholder="GRN"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="color" class="form-label">Color</label>
+              <input
+                type="text"
+                class="form-control"
+                id="colorOrder"
+                placeholder="Color"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="roles" class="form-label">Roles</label>
+              <input
+                type="text"
+                class="form-control"
+                id="roles"
+                placeholder="Roles"
+              />
             </div>
           </div>
-          <button type="submit" class="btn btn-primary btn-block mb-4">
-            Login
-          </button>
-        </form>
-      </section>
 
-      <!-- Admin Dashboard Section -->
-      <section class="container" id="admin_dashboard" style="display: none">
-        <div class="header">
-          <h2>Admin Dashboard</h2>
-        </div>
-        <div class="btn-dashboard">
-          <button class="btn btn-primary" onclick="showAddProduct()">
-            Add New Product
-          </button>
-          <button class="btn btn-primary" onclick="showNewOrder()">
-            New Order
-          </button>
-          <button class="btn btn-primary" onclick="showAddRecipe()">
-            Recipe Page
-          </button>
-          <button class="btn btn-primary">Products Report</button>
-          <button class="btn btn-primary" onclick="showAddUser()">
-            Add New User
-          </button>
-          <button class="btn btn-danger" onclick="logout()">Logout</button>
-        </div>
-      </section>
+          <!-- Right Side -->
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="machineNo" class="form-label">Machine No.</label>
+              <select id="machineNoOrder" class="form-select">
+                <option value="">Select Machine</option>
+                <option value="Machine 1">Machine 1</option>
+                <option value="Machine 2">Machine 2</option>
+                <option value="Machine 3">Machine 3</option>
+                <option value="Machine 4">Machine 4</option>
+                <option value="Machine 5">Machine 5</option>
+                <option value="Machine 6">Machine 6</option>
+                <option value="Machine 7">Machine 7</option>
+                <option value="Machine 8">Machine 8</option>
+                <option value="Machine 9">Machine 9</option>
+              </select>
+            </div>
 
-      <!-- User Dashboard Section -->
-      <section class="container" id="user_dashboard" style="display: none">
-        <div class="header">
-          <h2>User Dashboard</h2>
-        </div>
-        <div class="btn-dashboard">
-          <button class="btn btn-primary" onclick="showNewOrder()">
-            New Order
-          </button>
-          <button class="btn btn-primary" onclick="showAddRecipe()">
-            Recipe Page
-          </button>
-          <button class="btn btn-primary" onclick="showAddProduct()">
-            Add New Product
-          </button>
-          <button class="btn btn-danger" onclick="logout()">Logout</button>
-        </div>
-      </section>
+            <div class="mb-3">
+              <label for="weight" class="form-label">Weight (Kg.)</label>
+              <input
+                type="number"
+                class="form-control"
+                id="weightOrder"
+                placeholder="Weight in Kg"
+              />
+            </div>
 
-      <!-- Add User Section -->
-      <section class="container" id="add_user_section" style="display: none">
-        <div class="header">
-          <h2>Add New User</h2>
-        </div>
-        <div class="mb-3">
-          <label for="userId" class="form-label">User ID</label>
-          <input
-            type="text"
-            disabled
-            class="form-control"
-            id="userId"
-            placeholder="User ID"
-          />
-        </div>
+            <div class="mb-3">
+              <label for="labDip" class="form-label">Lab Dip</label>
+              <input
+                type="text"
+                class="form-control"
+                id="labDipOrder"
+                placeholder="Lab Dip"
+              />
+            </div>
 
-        <div class="mb-3">
-          <label for="fullName" class="form-label">Full Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="fullName"
-            placeholder="Full Name"
-          />
-        </div>
+            <div class="mb-3">
+              <label for="liquorRatio" class="form-label">Liquor Ratio</label>
+              <input
+                type="text"
+                class="form-control"
+                id="liquorRatioOrder"
+                placeholder="Liquor Ratio"
+              />
+            </div>
 
-        <div class="mb-3">
-          <label for="user_name" class="form-label">User Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="user_name"
-            placeholder="User Name"
-          />
-        </div>
+            <div class="mb-3">
+              <label for="fabric" class="form-label">Fabric</label>
+              <select class="form-select" id="fabricOrder">
+                <option selected>Choose...</option>
+                <option>Fabric 1</option>
+                <option>Fabric 2</option>
+                <!-- Add more options as needed -->
+              </select>
+            </div>
 
-        <div class="mb-3">
-          <label for="userPassword" class="form-label">Password</label>
-          <input
-            type="text"
-            class="form-control"
-            id="userPassword"
-            placeholder="Password"
-          />
-        </div>
-        <div class="mb-3">
-          <label for="userRole" class="form-label">User Role</label>
-          <select id="userRole" class="form-select">
-            <option value="">Select User Role</option>
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
+            <div class="mb-3">
+              <label for="volume" class="form-label">Volume (L)</label>
+              <input
+                type="number"
+                class="form-control"
+                id="volumeOrder"
+                placeholder="Volume in Liters"
+              />
+            </div>
+          </div>
         </div>
 
         <div>
-          <button type="button" class="btn btn-primary" onclick="saveUser()">
+          <button type="button" class="btn btn-primary" onclick="saveOrder()">
             Save
           </button>
-
           <button
             type="button"
             class="btn btn-secondary"
-            onclick="updateUser()"
+            onclick="updateOrder()"
           >
             Update
           </button>
-          <button type="button" class="btn btn-success" onclick="deleteUser()">
+          <button type="button" class="btn btn-success" onclick="deleteOrder()">
             Delete
           </button>
           <button
@@ -188,176 +438,50 @@
             Logout
           </button>
         </div>
+      </form>
+    </section>
 
-        <div class="mt-3">
-          <div class="table-section">
-            <table class="table table-bordered border-primary table-hover">
-              <thead class="table-dark">
-                <tr>
-                  <th scope="col">User ID</th>
-                  <th scope="col">Full Name</th>
-                  <th scope="col">User Name</th>
-                  <th scope="col">Password</th>
-                  <th scope="col">User Role</th>
-                </tr>
-              </thead>
-              <tbody id="empTable"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+    <!-- Add Recipe Section -->
+    <section id="new_recipe_section" style="display: none">
+      <!-- Form Section -->
+      <div class="form-section">
+        <h2 style="text-align: center">
+          SNT Dyeing Recipe & Process Management
+        </h2>
 
-      <!-- Add Product Session  -->
-      <section class="container" id="add_product_section" style="display: none">
-        <div class="header">
-          <h2>Add New Product</h2>
-        </div>
-        <div class="mb-3">
-          <label for="productId" class="form-label">Product ID</label>
-          <input
-            type="text"
-            disabled
-            class="form-control"
-            id="productId"
-            placeholder="Product ID"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label for="productName" class="form-label">Product Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="productName"
-            placeholder="Product Name"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label for="productType" class="form-label">Product Type</label>
-          <select id="productType" class="form-select">
-            <option value="">Select Product Type</option>
-            <option value="Dye">Dye</option>
-            <option value="Chemical">Chemical</option>
-          </select>
-        </div>
-
-        <div>
-          <button
-            type="button"
-            id="productSaveButton"
-            class="btn btn-primary"
-            onclick="saveProduct()"
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            onclick="updateProduct()"
-          >
-            Update
-          </button>
-          <button
-            type="button"
-            class="btn btn-success"
-            onclick="deleteProduct()"
-          >
-            Delete
-          </button>
-          <button
-            type="button"
-            class="btn btn-warning"
-            onclick="backToDashboard()"
-          >
-            Back
-          </button>
-          <button type="button" class="btn btn-danger" onclick="logout()">
-            Logout
-          </button>
-        </div>
-
-        <div class="mt-3">
-          <div class="table-container">
-            <table class="table table-bordered border-primary table-hover">
-              <thead class="table-dark">
-                <tr>
-                  <th scope="col">Product ID</th>
-                  <th scope="col">Product Name</th>
-                  <th scope="col">Product Type</th>
-                </tr>
-              </thead>
-              <tbody id="productTable"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-      <!-- New Order Section -->
-      <section class="container" id="new_order_section" style="display: none">
-        <div class="header">
-          <h2>New Order</h2>
-        </div>
         <form>
           <div class="row">
-            <!-- Left Side -->
-            <div class="col-md-6">
+            <!-- First Row -->
+            <div class="col-md-3">
               <div class="mb-3">
                 <label for="reciNo" class="form-label">Reci No.</label>
                 <input
                   type="text"
                   disabled
                   class="form-control"
-                  id="reciNoOrder"
+                  id="reciNo"
                   placeholder="Reci No."
                 />
               </div>
-
               <div class="mb-3">
-                <label for="date" class="form-label">Date</label>
-                <input type="date" class="form-control" id="date" />
-              </div>
-
-              <div class="mb-3">
-                <label for="time" class="form-label">Time</label>
-                <input type="time" class="form-control" id="timeOrder" />
-              </div>
-
-              <div class="mb-3">
-                <label for="grn" class="form-label">GRN</label>
+                <label for="grn" class="form-label">G.R.N.</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="grnOrder"
-                  placeholder="GRN"
-                />
-              </div>
-
-              <div class="mb-3">
-                <label for="color" class="form-label">Color</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="colorOrder"
-                  placeholder="Color"
-                />
-              </div>
-
-              <div class="mb-3">
-                <label for="roles" class="form-label">Roles</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="roles"
-                  placeholder="Roles"
+                  id="grn"
+                  placeholder="G.R.N."
                 />
               </div>
             </div>
 
-            <!-- Right Side -->
-            <div class="col-md-6">
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" class="form-control" id="rp_date" />
+              </div>
               <div class="mb-3">
                 <label for="machineNo" class="form-label">Machine No.</label>
-                <select id="machineNoOrder" class="form-select">
+                <select id="machineNo" class="form-select">
                   <option value="">Select Machine</option>
                   <option value="Machine 1">Machine 1</option>
                   <option value="Machine 2">Machine 2</option>
@@ -370,271 +494,156 @@
                   <option value="Machine 9">Machine 9</option>
                 </select>
               </div>
+            </div>
 
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label for="time" class="form-label">Time</label>
+                <input type="time" class="form-control" id="rp_time" />
+              </div>
+              <!-- Lab Dip Input Field with Suggestions -->
+              <div class="mb-3">
+                <label for="labDip" class="form-label">Lab Dip <strong>(eg: AS-PC 4450)</strong></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="labDip"
+                  placeholder="Lab Dip"
+                  list="labDipSuggestions"
+                />
+                <datalist id="labDipSuggestions"></datalist>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label for="color" class="form-label">Color</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="color"
+                  placeholder="Color"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="fabric" class="form-label">Fabric</label>
+                <select id="fabric" class="form-select">
+                  <option value="Airtex">Airtex</option>
+                  <option value="Cotton S/J">Cotton S/J</option>
+                  <option value="Cotton S/J 30s">Cotton S/J 30s</option>
+                  <option value="Cotton S/J 40s">Cotton S/J 40s</option>
+                  <option value="Cotton I/L">Cotton I/L</option>
+                  <option value="LV 1">LV 1</option>
+                  <option value="LV 2">LV 2</option>
+                  <option value="LV Rib">LV Rib</option>
+                  <option value="PC Lacost 20s">PC Lacost 20s</option>
+                  <option value="PC Lacost 24s">PC Lacost 24s</option>
+                  <option value="PC Lacost 30s">PC Lacost 30s</option>
+                  <option value="PC B. Lacost 20s">PC B. Lacost 20s</option>
+                  <option value="PC B. Lacost 24s">PC B. Lacost 24s</option>
+                  <option value="PC B. Lacost 30s">PC B. Lacost 30s</option>
+                  <option value="PC I/L">PC I/L</option>
+                  <option value="PC P/K 20s">PC P/K 20s</option>
+                  <option value="PC P/K 24s">PC P/K 24s</option>
+                  <option value="PC P/K 30s">PC P/K 30s</option>
+                  <option value="PC RIB 24s">PC RIB 24s</option>
+                  <option value="PC RIB 30s">PC RIB 30s</option>
+                  <option value="PC RNB">PC RNB</option>
+                  <option value="PC School Shorts">PC School Shorts</option>
+                  <option value="PC Skinners">PC Skinners</option>
+                  <option value="PC S/J 20s">PC S/J 20s</option>
+                  <option value="PC S/J 24s">PC S/J 24s</option>
+                  <option value="PC S/J 30s">PC S/J 30s</option>
+                  <option value="PC S/J Millage 24s">PC S/J Millage 24s</option>
+                  <option value="PC S/J Millage 30s">PC S/J Millage 30s</option>
+                  <option value="PC S/J underskirt">PC S/J underskirt</option>
+                  <option value="P.Coat-Cool">P.Coat-Cool</option>
+                  <option value="P.Coat-Chi">P.Coat-Chi</option>
+                  <option value="Poly B. Lacost Micro">
+                    Poly B. Lacost Micro
+                  </option>
+                  <option value="Poly W/L">Poly W/L</option>
+                  <option value="Poly Ester Closole">Poly Ester Closole</option>
+                  <option value="PV 45">PV 45</option>
+                  <option value="PV 60">PV 60</option>
+                  <option value="PV Rib">PV Rib</option>
+                  <option value="RN Rib">RN Rib</option>
+                  <option value="RN 1">RN 1</option>
+                  <option value="RN 2">RN 2</option>
+                  <option value="Spun Rib">Spun Rib</option>
+                  <option value="Spun S/J 40s P.coat Seumi">
+                    Spun S/J 40s P.coat Seumi
+                  </option>
+                  <option value="Spun S/J 30s">Spun S/J 30s</option>
+                  <option value="Spun S/J 40s">Spun S/J 40s</option>
+                  <option value="T/C">T/C</option>
+                  <option value="Viscouse">Viscouse</option>
+
+                  <!-- Add more options as needed -->
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Second Row -->
+            <div class="col-md-3">
               <div class="mb-3">
                 <label for="weight" class="form-label">Weight (Kg.)</label>
                 <input
                   type="number"
                   class="form-control"
-                  id="weightOrder"
+                  id="weight"
                   placeholder="Weight in Kg"
                 />
               </div>
+            </div>
 
-              <div class="mb-3">
-                <label for="labDip" class="form-label">Lab Dip</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="labDipOrder"
-                  placeholder="Lab Dip"
-                />
-              </div>
-
+            <div class="col-md-3">
               <div class="mb-3">
                 <label for="liquorRatio" class="form-label">Liquor Ratio</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="liquorRatioOrder"
-                  placeholder="Liquor Ratio"
-                />
+                <div class="input-group">
+                  <span class="input-group-text">1:</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="liquorRatio"
+                    placeholder="Enter Ratio"
+                    min="1"
+                  />
+                </div>
               </div>
+            </div>
 
-              <div class="mb-3">
-                <label for="fabric" class="form-label">Fabric</label>
-                <select class="form-select" id="fabricOrder">
-                  <option selected>Choose...</option>
-                  <option>Fabric 1</option>
-                  <option>Fabric 2</option>
-                  <!-- Add more options as needed -->
-                </select>
-              </div>
-
+            <div class="col-md-3">
               <div class="mb-3">
                 <label for="volume" class="form-label">Volume (L)</label>
                 <input
                   type="number"
                   class="form-control"
-                  id="volumeOrder"
+                  id="volume"
                   placeholder="Volume in Liters"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label for="roleCount" class="form-label">Role Count</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="roleCount"
+                  placeholder="Role Count"
                 />
               </div>
             </div>
           </div>
 
-          <div>
-            <button type="button" class="btn btn-primary" onclick="saveOrder()">
-              Save
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              onclick="updateOrder()"
-            >
-              Update
-            </button>
-            <button
-              type="button"
-              class="btn btn-success"
-              onclick="deleteOrder()"
-            >
-              Delete
-            </button>
-            <button
-              type="button"
-              class="btn btn-warning"
-              onclick="backToDashboard()"
-            >
-              Back
-            </button>
-            <button type="button" class="btn btn-danger" onclick="logout()">
-              Logout
-            </button>
-          </div>
-        </form>
-      </section>
-
-      <!-- Add Recipe Section -->
-      <section id="new_recipe_section" style="display: none">
-        <!-- Form Section -->
-        <div class="form-section">
-          <h2 style="text-align: center;">SNT Dyeing Recipe & Process Management</h2>
-
-          <form>
-            <div class="row">
-              <!-- First Row -->
-              <div class="col-md-3">
-                <div class="mb-3">
-                  <label for="reciNo" class="form-label">Reci No.</label>
-                  <input
-                    type="text"
-                    disabled
-                    class="form-control"
-                    id="reciNo"
-                    placeholder="Reci No."
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="grn" class="form-label">G.R.N.</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="grn"
-                    placeholder="G.R.N."
-                  />
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="mb-3">
-                  <label for="date" class="form-label">Date</label>
-                  <input type="date" class="form-control" id="rp_date" />
-                </div>
-                <div class="mb-3">
-                  <label for="machineNo" class="form-label">Machine No.</label>
-                  <select id="machineNo" class="form-select">
-                    <option value="">Select Machine</option>
-                    <option value="Machine 1">Machine 1</option>
-                    <option value="Machine 2">Machine 2</option>
-                    <option value="Machine 3">Machine 3</option>
-                    <option value="Machine 4">Machine 4</option>
-                    <option value="Machine 5">Machine 5</option>
-                    <option value="Machine 6">Machine 6</option>
-                    <option value="Machine 7">Machine 7</option>
-                    <option value="Machine 8">Machine 8</option>
-                    <option value="Machine 9">Machine 9</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="mb-3">
-                  <label for="time" class="form-label">Time</label>
-                  <input type="time" class="form-control" id="rp_time" />
-                </div>
-                <!-- Lab Dip Input Field with Suggestions -->
-                <div class="mb-3">
-                  <label for="labDip" class="form-label">Lab Dip</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="labDip"
-                    placeholder="Lab Dip"
-                    list="labDipSuggestions"
-                  />
-                  <datalist id="labDipSuggestions"></datalist>
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="mb-3">
-                  <label for="color" class="form-label">Color</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="color"
-                    placeholder="Color"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="fabric" class="form-label">Fabric</label>
-                  <select id="fabric" class="form-select">
-                    <option value="Airtex">Airtex</option>
-                    <option value="Cotton S/J">Cotton S/J</option>
-                    <option value="Cotton I/L">Cotton I/L</option>
-                    <option value="LV 2">LV 2</option>
-                    <option value="PC B. Lacost">PC B. Lacost</option>
-                    <option value="PC I/L">PC I/L</option>
-                    <option value="PC P/k">PC P/k</option>
-                    <option value="PC Rib">PC Rib</option>
-                    <option value="PC S/J">PC S/J</option>
-                    <option value="PC S/J 20s">PC S/J 20s</option>
-                    <option value="PC S/J 24s">PC S/J 24s</option>
-                    <option value="PC S/J 30s">PC S/J 30s</option>
-                    <option value="PC S/J Millage">PC S/J Millage</option>
-                    <option value="P.Coat-Cool">P.Coat-Cool</option>
-                    <option value="PCS/J">PCS/J</option>
-                    <option value="PCS/J 24s">PCS/J 24s</option>
-                    <option value="PCS/J 30s">PCS/J 30s</option>
-                    <option value="Poly W/L">Poly W/L</option>
-                    <option value="Rib">Rib</option>
-                    <option value="Rn 2">Rn 2</option>
-                    <option value="Spun Rib">Spun Rib</option>
-                    <option value="Spun S/J">Spun S/J</option>
-                    <option value="Spun S/J 24s">Spun S/J 24s</option>
-                    <option value="Spun S/J 30s">Spun S/J 30s</option>
-                    <option value="T/C">T/C</option>
-                    <option value="Viscouse">Viscouse</option>
-                    <option value="W/L">W/L</option>
-
-                    <!-- Add more options as needed -->
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <!-- Second Row -->
-              <div class="col-md-3">
-                <div class="mb-3">
-                  <label for="weight" class="form-label">Weight (Kg.)</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="weight"
-                    placeholder="Weight in Kg"
-                  />
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="mb-3">
-                  <label for="liquorRatio" class="form-label"
-                    >Liquor Ratio</label
-                  >
-                  <div class="input-group">
-                    <span class="input-group-text">1:</span>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="liquorRatio"
-                      placeholder="Enter Ratio"
-                      min="1"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="mb-3">
-                  <label for="volume" class="form-label">Volume (L)</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="volume"
-                    placeholder="Volume in Liters"
-                  />
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="mb-3">
-                  <label for="roleCount" class="form-label">Role Count</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="roleCount"
-                    placeholder="Role Count"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <!-- Third Row (Table Form) -->
-              <div class="col-md-2">
-                <!-- <div class="mb-3">
+          <div class="row">
+            <!-- Third Row (Table Form) -->
+            <div class="col-md-2">
+              <!-- <div class="mb-3">
                   <label for="function" class="form-label"
                     ><strong>Function</strong></label
                   >
@@ -645,235 +654,237 @@
                     placeholder="Function"
                   />
                 </div> -->
-                <div class="mb-3">
-                  <label for="function" class="form-label-inset"
-                    ><strong>Select Function</strong></label
-                  >
-                  <select id="function" class="form-select">
-                    <option value=""><strong></strong></option>
-                    <option value="Add Chemical">Add Chemical</option>
-                    <option value="Add Dye">Add Dye</option>
-                    <option value="Add Salt">Add Salt</option>
-                    <option value="Check Sample">Check Sample</option>
-                    <option value="Load Time">Load Time</option>
-                    <option value="Load Date">Load Date</option>
-                    <option value="Unload Time">Unload Time</option>
-                    <option value="Unload Date">Unload Date</option>
-                    <option value="Fill">fill</option>
-                    <option value="Drain">Drain</option>
-                    <option value="Rinse">Rinse</option>
-                    <option value="Operator">Operator</option>
-                    <!-- Add more options as needed -->
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-2">
-                <div class="mb-3">
-                  <label for="product" class="form-label-inset"
-                    ><strong>Product</strong></label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="product"
-                    list="productSuggestions"
-                    placeholder="Type product name"
-                  />
-                  <datalist id="productSuggestions">
-                    <!-- Suggestions will be populated here -->
-                  </datalist>
-                </div>
-              </div>
-
-              <div class="col-md-2">
-                <div class="mb-3">
-                  <label for="dose" class="form-label-inset"
-                    ><strong>Dose (g/L or %)</strong></label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="dose"
-                    placeholder="Dose"
-                  />
-                </div>
-              </div>
-
-              <div class="col-md-2">
-                <div class="mb-3">
-                  <label for="temp" class="form-label-inset"
-                    ><strong>Temp (°C)</strong></label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="temp"
-                    placeholder="Temperature in °C"
-                  />
-                </div>
-              </div>
-
-              <div class="col-md-2">
-                <div class="mb-3">
-                  <label for="time" id="timeRecipe" class="form-label-inset"
-                    ><strong>Time (Mins)</strong></label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="time"
-                    placeholder="Time in Minutes"
-                  />
-                </div>
-              </div>
-
-              <div class="col-md-2">
-                <div class="mb-3">
-                  <label for="amtsInGrams" class="form-label-inset"
-                    ><strong>Amts in Grams</strong></label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="amtsInGrams"
-                    placeholder="Amount in Grams"
-                  />
-                </div>
+              <div class="mb-3">
+                <label for="function" class="form-label-inset"
+                  ><strong>Select Function</strong></label
+                >
+                <select id="function" class="form-select">
+                  <option value=""><strong></strong></option>
+                  <option value="Add Chemical">Add Chemical</option>
+                  <option value="Add Dye">Add Dye</option>
+                  <option value="Add Salt">Add Salt</option>
+                  <option value="Check Sample">Check Sample</option>
+                  <option value="Load Time">Load Time</option>
+                  <option value="Load Date">Load Date</option>
+                  <option value="Unload Time">Unload Time</option>
+                  <option value="Unload Date">Unload Date</option>
+                  <option value="Fill">fill</option>
+                  <option value="Drain">Drain</option>
+                  <option value="Rinse">Rinse</option>
+                  <option value="Operator">Operator</option>
+                  <!-- Add more options as needed -->
+                </select>
               </div>
             </div>
 
-            <div class="row">
-              <!-- Button Group -->
-              <div class="d-flex justify-content-start gap-2 mt-3">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onclick="saveRecipe()"
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label for="product" class="form-label-inset"
+                  ><strong>Product</strong></label
                 >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  onclick="clearFields2()"
-                >
-                  Clear
-                </button>
-                <button id="searchButton" type="button" class="btn btn-success">
-                  Search Recipe
-                </button>
-
-                <button
-                  type="button"
-                  class="btn btn-danger"
-                  onclick="deleteRecipe()"
-                >
-                  Delete
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-warning"
-                  onclick="printRecipe()"
-                >
-                  Print
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-warning"
-                  onclick="backToDashboard()"
-                >
-                  Back
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  onclick="logout()"
-                >
-                  Logout
-                </button>
-
-                <!-- New Buttons with Icons -->
-                <div
-                  class="btn-group"
-                  role="group"
-                  aria-label="Additional Actions"
-                >
-                  <button type="button" class="btn btn-info" onclick="addRow()">
-                    ADD
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-info"
-                    onclick="updateRow()"
-                  >
-                    UPDATE
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-info"
-                    onclick="moveRow('up')"
-                    title="Move Up"
-                  >
-                    <i class="fas fa-arrow-up"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-info"
-                    onclick="moveRow('down')"
-                    title="Move Down"
-                  >
-                    <i class="fas fa-arrow-down"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-info"
-                    onclick="deleteSelectedRow()"
-                  >
-                    DELETE
-                  </button>
-                 <button
-                 type="button"
-                 class="btn btn-info"
-                 onclick="clearFields()"
-                 >CLEAR</button>
-                  <button
-                    type="button"
-                    class="btn btn-info"
-                    onclick="addSpaceRow()"
-                  >
-                    ADD SPACE ROW
-                  </button>
-                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="product"
+                  list="productSuggestions"
+                  placeholder="Type product name"
+                />
+                <datalist id="productSuggestions">
+                  <!-- Suggestions will be populated here -->
+                </datalist>
               </div>
             </div>
-          </form>
-          <!-- Table Section -->
-          <div class="table-section">
-            <div class="table-container">
-              <table
-                class="table table-bordered border-primary table-hover"
-                id="processTable"
-              >
-                <thead class="table-dark">
-                  <tr>
-                    <th scope="col">Function</th>
-                    <th scope="col">Product</th>
-                    <th scope="col">Dose (g/L or %)</th>
-                    <th scope="col">Temp (°C)</th>
-                    <th scope="col">Time (Mins)</th>
-                    <th class="amtsInGrams" scope="col">Amts in Grams</th>
-                  </tr>
-                </thead>
-                <tbody id="processTableBody">
-                  <!-- Table rows will be dynamically added here -->
-                </tbody>
-              </table>
+
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label for="dose" class="form-label-inset"
+                  ><strong>Dose (g/L or %)</strong></label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="dose"
+                  placeholder="Dose"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label for="temp" class="form-label-inset"
+                  ><strong>Temp (°C)</strong></label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="temp"
+                  placeholder="Temperature in °C"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label for="time" id="timeRecipe" class="form-label-inset"
+                  ><strong>Time (Mins)</strong></label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="time"
+                  placeholder="Time in Minutes"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label for="amtsInGrams" class="form-label-inset"
+                  ><strong>Amts in Grams</strong></label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="amtsInGrams"
+                  placeholder="Amount in Grams"
+                />
+              </div>
             </div>
           </div>
+
+          <div class="row">
+            <!-- Button Group -->
+            <div class="d-flex justify-content-start gap-2 mt-3">
+              <button
+                type="button"
+                class="btn btn-primary"
+                onclick="saveRecipe()"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="clearFields2()"
+              >
+                Clear
+              </button>
+              <button id="searchButton" type="button" class="btn btn-success">
+                Search Recipe
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-danger"
+                onclick="deleteRecipe()"
+              >
+                Delete
+              </button>
+              <button
+                type="button"
+                class="btn btn-warning"
+                onclick="printRecipe()"
+              >
+                Print
+              </button>
+              <button
+                type="button"
+                class="btn btn-warning"
+                onclick="backToDashboard()"
+              >
+                Back
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="logout()"
+              >
+                Logout
+              </button>
+
+              <!-- New Buttons with Icons -->
+              <div
+                class="btn-group"
+                role="group"
+                aria-label="Additional Actions"
+              >
+                <button type="button" class="btn btn-info" onclick="addRow()">
+                  ADD
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-info"
+                  onclick="updateRow()"
+                >
+                  UPDATE
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-info"
+                  onclick="moveRow('up')"
+                  title="Move Up"
+                >
+                  <i class="fas fa-arrow-up"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-info"
+                  onclick="moveRow('down')"
+                  title="Move Down"
+                >
+                  <i class="fas fa-arrow-down"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-info"
+                  onclick="deleteSelectedRow()"
+                >
+                  DELETE
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-info"
+                  onclick="clearFields()"
+                >
+                  CLEAR
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-info"
+                  onclick="addSpaceRow()"
+                >
+                  ADD SPACE ROW
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- Table Section -->
+        <div class="table-section">
+          <div class="table-container">
+            <table
+              class="table table-bordered border-primary table-hover"
+              id="processTable"
+            >
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">Function</th>
+                  <th scope="col">Product</th>
+                  <th scope="col">Dose (g/L or %)</th>
+                  <th scope="col">Temp (°C)</th>
+                  <th scope="col">Time (Mins)</th>
+                  <th class="amtsInGrams" scope="col">Amts in Grams</th>
+                </tr>
+              </thead>
+              <tbody id="processTableBody">
+                <!-- Table rows will be dynamically added here -->
+              </tbody>
+            </table>
+          </div>
         </div>
-      </section>
-    
+      </div>
+    </section>
+
     <script src="js/jquery-3.6.4.min.js"></script>
     <!--    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
