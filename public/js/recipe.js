@@ -14,7 +14,7 @@ $(document).ready(function () {
       method: "GET",
       contentType: "application/json",
       url:
-        "http://localhost:8080/api/v1/product/searchProducts?query=" +
+        "http://192.168.8.104:8080/api/v1/product/searchProducts?query=" +
         encodeURIComponent(query),
       success: function (response) {
         if (response.code === "00") {
@@ -74,7 +74,7 @@ function updateRow() {
   const doseValue = parseFloat(document.getElementById("dose").value); // Ensure it's a number
   const tempValue = document.getElementById("temp").value;
   const timeValue = document.getElementById("time").value;
-  
+
   // Fetch product type and calculate amtsInGrams
   let amtsInGramsValue;
   let weight = $("#weight").val();
@@ -82,9 +82,15 @@ function updateRow() {
 
   $.ajax({
     method: "GET",
-    url: "http://localhost:8080/api/v1/product/getProductType?productName=" + encodeURIComponent(productValue),
+    url:
+      "http://192.168.8.104:8080/api/v1/product/getProductType?productName=" +
+      encodeURIComponent(productValue),
     success: function (response) {
-      if (response.code === "00" && response.content && response.content.productType) {
+      if (
+        response.code === "00" &&
+        response.content &&
+        response.content.productType
+      ) {
         const productType = response.content.productType;
 
         // Calculate amtsInGrams based on product type
@@ -115,12 +121,13 @@ function updateRow() {
       }
     },
     error: function (xhr, exception) {
-      console.error("Error fetching product type: " + xhr.status + " - " + xhr.statusText);
+      console.error(
+        "Error fetching product type: " + xhr.status + " - " + xhr.statusText
+      );
       alert("Error fetching product type");
-    }
+    },
   });
 }
-
 
 function addRow() {
   // Get values from input fields
@@ -139,7 +146,7 @@ function addRow() {
   $.ajax({
     method: "GET",
     url:
-      "http://localhost:8080/api/v1/product/getProductType?productName=" +
+      "http://192.168.8.104:8080/api/v1/product/getProductType?productName=" +
       encodeURIComponent(productValue),
     success: function (response) {
       // Check if the response is as expected
@@ -421,7 +428,7 @@ function saveRecipe() {
   $.ajax({
     method: "POST",
     contentType: "application/json",
-    url: "http://localhost:8080/api/v1/recipe/saveRecipe",
+    url: "http://192.168.8.104:8080/api/v1/recipe/saveRecipe",
     data: JSON.stringify(recipeData),
     success: function (data) {
       alert("Recipe saved successfully");
@@ -442,7 +449,7 @@ function saveRecipe() {
 //   console.log(`Fetching product ID for name: ${productName}`);
 //   return $.ajax({
 //     method: "GET",
-//     url: `http://localhost:8080/api/v1/product/getProductByProductName/${encodeURIComponent(productName)}`,
+//     url: `http://192.168.8.104:8080/api/v1/product/getProductByProductName/${encodeURIComponent(productName)}`,
 //     dataType: "json"
 //   }).then(function (response) {
 //     if (response.code === "00" && response.content) {
@@ -537,7 +544,7 @@ function saveRecipe() {
 //   $.ajax({
 //     method: "POST",
 //     contentType: "application/json",
-//     url: "http://localhost:8080/api/v1/recipe/saveRecipe",
+//     url: "http://192.168.8.104:8080/api/v1/recipe/saveRecipe",
 //     data: JSON.stringify(recipeData),
 //     success: function (data) {
 //       alert("Recipe saved successfully");
@@ -562,7 +569,7 @@ function saveRecipe() {
 //   console.log(`Fetching product ID for name: ${productName}`);
 //   return $.ajax({
 //     method: "GET",
-//     url: `http://localhost:8080/api/v1/product/getProductByProductName/${encodeURIComponent(productName)}`,
+//     url: `http://192.168.8.104:8080/api/v1/product/getProductByProductName/${encodeURIComponent(productName)}`,
 //     dataType: "json"
 //   }).then(function (response) {
 //     if (response.code === "00" && response.content) {
@@ -647,7 +654,7 @@ function saveRecipe() {
 //   $.ajax({
 //     method: "POST",
 //     contentType: "application/json",
-//     url: "http://localhost:8080/api/v1/recipe/saveRecipe",
+//     url: "http://192.168.8.104:8080/api/v1/recipe/saveRecipe",
 //     data: JSON.stringify(recipeData),
 //     success: function (data) {
 //       alert("Recipe saved successfully");
@@ -678,7 +685,7 @@ $(document).ready(function () {
       method: "GET",
       contentType: "application/json",
       url:
-        "http://localhost:8080/api/v1/recipe/searchLabDips?query=" +
+        "http://192.168.8.104:8080/api/v1/recipe/searchLabDips?query=" +
         encodeURIComponent(query),
       success: function (response) {
         if (response.code === "00") {
@@ -946,13 +953,6 @@ $(document).ready(function () {
 //   }, 1000);
 // }
 
-
-
-
-
-
-
-
 $(document).ready(function () {
   // Bind the click event of the search button
   $("#searchButton").on("click", function () {
@@ -969,7 +969,7 @@ $(document).ready(function () {
     $.ajax({
       method: "GET",
       contentType: "application/json",
-      url: `http://localhost:8080/api/v1/recipe/getRecipeByLabDip/${encodeURIComponent(
+      url: `http://192.168.8.104:8080/api/v1/recipe/getRecipeByLabDip/${encodeURIComponent(
         labDip
       )}`,
       success: function (response) {
@@ -1040,7 +1040,7 @@ $(document).ready(function () {
 //     $.ajax({
 //       method: "GET",
 //       contentType: "application/json",
-//       url: `http://localhost:8080/api/v1/recipe/getRecipeByLabDip/${encodeURIComponent(labDip)}`,
+//       url: `http://192.168.8.104:8080/api/v1/recipe/getRecipeByLabDip/${encodeURIComponent(labDip)}`,
 //       success: function (response) {
 //         if (response.code === "00") {
 //           displayRecipe(response.content);
@@ -1063,7 +1063,7 @@ $(document).ready(function () {
 
 //     return $.ajax({
 //       method: "GET",
-//       url: `http://localhost:8080/api/v1/product/getProductByProductId/${productId}`,
+//       url: `http://192.168.8.104:8080/api/v1/product/getProductByProductId/${productId}`,
 //       dataType: "json"
 //     }).then(function (response) {
 //       if (response.code === "00" && response.content) {
@@ -1167,7 +1167,7 @@ function updateAmtsInGrams() {
     $.ajax({
       method: "GET",
       url:
-        "http://localhost:8080/api/v1/product/getProductType?productName=" +
+        "http://192.168.8.104:8080/api/v1/product/getProductType?productName=" +
         encodeURIComponent(productValue),
       success: function (response) {
         if (
@@ -1209,23 +1209,18 @@ function updateAmtsInGrams() {
 document.getElementById("weight").addEventListener("input", updateAmtsInGrams);
 document.getElementById("volume").addEventListener("input", updateAmtsInGrams);
 
+function clearFields2() {
+  // Clear all input fields except date and time
+  document.querySelectorAll(".form-control").forEach((input) => {
+    if (input.type !== "date" && input.type !== "time") {
+      input.value = "";
+    }
+  });
 
+  // Clear the table body
+  document.getElementById("processTableBody").innerHTML = "";
 
-
-
-  function clearFields2() {
-    // Clear all input fields except date and time
-    document.querySelectorAll('.form-control').forEach(input => {
-      if (input.type !== 'date' && input.type !== 'time') {
-        input.value = '';
-      }
-    });
-
-    // Clear the table body
-    document.getElementById('processTableBody').innerHTML = '';
-
-    // Optional: Clear the datalist options if needed
-    document.getElementById('labDipSuggestions').innerHTML = '';
-    document.getElementById('productSuggestions').innerHTML = '';
-  }
-
+  // Optional: Clear the datalist options if needed
+  document.getElementById("labDipSuggestions").innerHTML = "";
+  document.getElementById("productSuggestions").innerHTML = "";
+}
