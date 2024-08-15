@@ -98,6 +98,10 @@ body {
   overflow: auto; /* Allow scrolling if content overflows */
   padding: 20px; /* Add some padding */
 }
+/* Change the button-group-recipe ID to button-group-recipe class in the CSS file. */
+#button-group-recipe {
+  max-height: 38px;
+}
 
 #add_user_section .container,
 #add_product_section .container {
