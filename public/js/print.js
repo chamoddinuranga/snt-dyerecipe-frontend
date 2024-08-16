@@ -133,7 +133,7 @@ function printRecipe() {
   printFooter.className = "print-footer";
   printFooter.innerHTML = `
         <p>ISSUED NO: 01</p>
-        <p>ISSUED DATE : 08.08.2024</p>
+        <p>ISSUED DATE : 17.08.2024</p>
         <P><STRONG>DOC.NO : KWS/F/12</STRONG></P>
         
     `;
