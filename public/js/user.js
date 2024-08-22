@@ -13,7 +13,7 @@ function saveUser() {
   $.ajax({
     method: "POST",
     contentType: "application/json",
-    url: "http://192.168.8.106:8080/api/v1/user/saveUser",
+    url: "http://192.168.8.105:8080/api/v1/user/saveUser",
     async: true,
     data: JSON.stringify({
       userId: "00", // Assuming backend generates this ID
@@ -48,7 +48,7 @@ function updateUser() {
   $.ajax({
     method: "PUT",
     contentType: "application/json",
-    url: "http://192.168.8.106:8080/api/v1/user/updateUser",
+    url: "http://192.168.8.105:8080/api/v1/user/updateUser",
     async: true,
     data: JSON.stringify({
       userId: userID, // Use the ID provided by the form
@@ -76,7 +76,7 @@ function deleteUser() {
     method: "DELETE",
     contentType: "application/json",
     url:
-      "http://192.168.8.106:8080/api/v1/user/deleteUserByUserName/" +
+      "http://192.168.8.105:8080/api/v1/user/deleteUserByUserName/" +
       encodeURIComponent(userName), // Encode the username to handle special characters
     async: true,
     success: function (data) {
@@ -97,7 +97,7 @@ function getAllUsers() {
   $.ajax({
     method: "GET",
     contentType: "application/json",
-    url: "http://192.168.8.106:8080/api/v1/user/getAllUsers",
+    url: "http://192.168.8.105:8080/api/v1/user/getAllUsers",
     async: true,
     success: function (data) {
       if (data.code === "00") {

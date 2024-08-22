@@ -6,7 +6,7 @@ getAllProducts();
 //     $.ajax({
 //         method: "POST",
 //         contentType: "application/json",
-//         url: "http://192.168.8.106:8080/api/v1/product/saveProduct",
+//         url: "http://192.168.8.105:8080/api/v1/product/saveProduct",
 //         async: true,
 //         data: JSON.stringify({
 //             "productId": "00", // Assuming product ID is auto-generated and not required here
@@ -54,7 +54,7 @@ getAllProducts();
 //         $.ajax({
 //             method: "POST",
 //             contentType: "application/json",
-//             url: "http://192.168.8.106:8080/api/v1/product/saveProduct",
+//             url: "http://192.168.8.105:8080/api/v1/product/saveProduct",
 //             async: true,
 //             data: JSON.stringify({
 //                 "productId": "00", // Assuming product ID is auto-generated and not required here
@@ -88,7 +88,7 @@ $(document).ready(function () {
     $.ajax({
       method: "POST",
       contentType: "application/json",
-      url: "http://192.168.8.106:8080/api/v1/product/saveProduct",
+      url: "http://192.168.8.105:8080/api/v1/product/saveProduct",
       async: true,
       data: JSON.stringify({
         productId: "00", // Assuming product ID is auto-generated and not required here
@@ -144,7 +144,7 @@ function updateProduct() {
   $.ajax({
     method: "PUT",
     contentType: "application/json",
-    url: "http://192.168.8.106:8080/api/v1/product/updateProduct",
+    url: "http://192.168.8.105:8080/api/v1/product/updateProduct",
     async: true,
     data: JSON.stringify({
       productId: productId,
@@ -170,7 +170,7 @@ function deleteProduct() {
     method: "DELETE",
     contentType: "application/json",
     url:
-      "http://192.168.8.106:8080/api/v1/product/deleteProductByProductName/" +
+      "http://192.168.8.105:8080/api/v1/product/deleteProductByProductName/" +
       encodeURIComponent(productName),
     async: true,
     success: function (data) {
@@ -189,7 +189,7 @@ function getAllProducts() {
   $.ajax({
     method: "GET",
     contentType: "application/json",
-    url: "http://192.168.8.106:8080/api/v1/product/getAllProducts",
+    url: "http://192.168.8.105:8080/api/v1/product/getAllProducts",
     async: true,
     success: function (data) {
       if (data.code === "00") {
