@@ -14,7 +14,7 @@ $(document).ready(function () {
       method: "GET",
       contentType: "application/json",
       url:
-        "http://192.168.8.105:8080/api/v1/product/searchProducts?query=" +
+        "http://192.168.8.102:8080/api/v1/product/searchProducts?query=" +
         encodeURIComponent(query),
       success: function (response) {
         if (response.code === "00") {
@@ -83,7 +83,7 @@ function updateRow() {
   $.ajax({
     method: "GET",
     url:
-      "http://192.168.8.105:8080/api/v1/product/getProductType?productName=" +
+      "http://192.168.8.102:8080/api/v1/product/getProductType?productName=" +
       encodeURIComponent(productValue),
     success: function (response) {
       if (
@@ -146,7 +146,7 @@ function addRow() {
   $.ajax({
     method: "GET",
     url:
-      "http://192.168.8.105:8080/api/v1/product/getProductType?productName=" +
+      "http://192.168.8.102:8080/api/v1/product/getProductType?productName=" +
       encodeURIComponent(productValue),
     success: function (response) {
       // Check if the response is as expected
@@ -428,7 +428,7 @@ function saveRecipe() {
   $.ajax({
     method: "POST",
     contentType: "application/json",
-    url: "http://192.168.8.105:8080/api/v1/recipe/saveRecipe",
+    url: "http://192.168.8.102:8080/api/v1/recipe/saveRecipe",
     data: JSON.stringify(recipeData),
     success: function (data) {
       alert("Recipe saved successfully");
@@ -449,7 +449,7 @@ function saveRecipe() {
 //   console.log(`Fetching product ID for name: ${productName}`);
 //   return $.ajax({
 //     method: "GET",
-//     url: `http://192.168.8.105:8080/api/v1/product/getProductByProductName/${encodeURIComponent(productName)}`,
+//     url: `http://192.168.8.102:8080/api/v1/product/getProductByProductName/${encodeURIComponent(productName)}`,
 //     dataType: "json"
 //   }).then(function (response) {
 //     if (response.code === "00" && response.content) {
@@ -544,7 +544,7 @@ function saveRecipe() {
 //   $.ajax({
 //     method: "POST",
 //     contentType: "application/json",
-//     url: "http://192.168.8.105:8080/api/v1/recipe/saveRecipe",
+//     url: "http://192.168.8.102:8080/api/v1/recipe/saveRecipe",
 //     data: JSON.stringify(recipeData),
 //     success: function (data) {
 //       alert("Recipe saved successfully");
@@ -569,7 +569,7 @@ function saveRecipe() {
 //   console.log(`Fetching product ID for name: ${productName}`);
 //   return $.ajax({
 //     method: "GET",
-//     url: `http://192.168.8.105:8080/api/v1/product/getProductByProductName/${encodeURIComponent(productName)}`,
+//     url: `http://192.168.8.102:8080/api/v1/product/getProductByProductName/${encodeURIComponent(productName)}`,
 //     dataType: "json"
 //   }).then(function (response) {
 //     if (response.code === "00" && response.content) {
@@ -654,7 +654,7 @@ function saveRecipe() {
 //   $.ajax({
 //     method: "POST",
 //     contentType: "application/json",
-//     url: "http://192.168.8.105:8080/api/v1/recipe/saveRecipe",
+//     url: "http://192.168.8.102:8080/api/v1/recipe/saveRecipe",
 //     data: JSON.stringify(recipeData),
 //     success: function (data) {
 //       alert("Recipe saved successfully");
@@ -685,7 +685,7 @@ $(document).ready(function () {
       method: "GET",
       contentType: "application/json",
       url:
-        "http://192.168.8.105:8080/api/v1/recipe/searchLabDips?query=" +
+        "http://192.168.8.102:8080/api/v1/recipe/searchLabDips?query=" +
         encodeURIComponent(query),
       success: function (response) {
         if (response.code === "00") {
@@ -969,7 +969,7 @@ $(document).ready(function () {
     $.ajax({
       method: "GET",
       contentType: "application/json",
-      url: `http://192.168.8.105:8080/api/v1/recipe/getRecipeByLabDip/${encodeURIComponent(
+      url: `http://192.168.8.102:8080/api/v1/recipe/getRecipeByLabDip/${encodeURIComponent(
         labDip
       )}`,
       success: function (response) {
@@ -1040,7 +1040,7 @@ $(document).ready(function () {
 //     $.ajax({
 //       method: "GET",
 //       contentType: "application/json",
-//       url: `http://192.168.8.105:8080/api/v1/recipe/getRecipeByLabDip/${encodeURIComponent(labDip)}`,
+//       url: `http://192.168.8.102:8080/api/v1/recipe/getRecipeByLabDip/${encodeURIComponent(labDip)}`,
 //       success: function (response) {
 //         if (response.code === "00") {
 //           displayRecipe(response.content);
@@ -1063,7 +1063,7 @@ $(document).ready(function () {
 
 //     return $.ajax({
 //       method: "GET",
-//       url: `http://192.168.8.105:8080/api/v1/product/getProductByProductId/${productId}`,
+//       url: `http://192.168.8.102:8080/api/v1/product/getProductByProductId/${productId}`,
 //       dataType: "json"
 //     }).then(function (response) {
 //       if (response.code === "00" && response.content) {
@@ -1167,7 +1167,7 @@ function updateAmtsInGrams() {
     $.ajax({
       method: "GET",
       url:
-        "http://192.168.8.105:8080/api/v1/product/getProductType?productName=" +
+        "http://192.168.8.102:8080/api/v1/product/getProductType?productName=" +
         encodeURIComponent(productValue),
       success: function (response) {
         if (
