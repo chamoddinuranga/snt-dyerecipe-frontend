@@ -14,7 +14,7 @@ function validatePassword() {
   $.ajax({
     method: "GET",
     contentType: "application/json",
-    url: "http://192.168.8.104:8080/api/v1/user/getAllUsers",
+    url: "http://192.168.8.105:8080/api/v1/user/getAllUsers",
     async: true,
     success: function (data) {
       if (data.code === "00") {
