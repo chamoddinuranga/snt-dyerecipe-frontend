@@ -14,7 +14,7 @@
 //       method: "GET",
 //       contentType: "application/json",
 //       url:
-//         "http://192.168.8.106:8080/api/v1/product/searchProducts?query=" +
+//         "http://192.168.8.155:8080/api/v1/product/searchProducts?query=" +
 //         encodeURIComponent(query),
 //       success: function (response) {
 //         if (response.code === "00") {
@@ -78,7 +78,7 @@
 //   $.ajax({
 //     method: "GET",
 //     url:
-//       "http://192.168.8.106:8080/api/v1/product/getProductType?productName=" +
+//       "http://192.168.8.155:8080/api/v1/product/getProductType?productName=" +
 //       encodeURIComponent(productValue),
 //     success: function (response) {
 //       // Check if the response is as expected
